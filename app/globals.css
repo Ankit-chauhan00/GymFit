@@ -3,7 +3,167 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+  /* ========================================
+     PRIMARY COLORS
+  ======================================== */
+
+  --color-primary-100: #ffe5e5;
+  --color-primary-500: #ff3b30;
+
+  /* ========================================
+     DARK COLORS
+  ======================================== */
+
+  --color-dark-100: #050505;
+  --color-dark-200: #0b0b0b;
+  --color-dark-300: #121212;
+  --color-dark-400: #1a1a1a;
+  --color-dark-500: #242424;
+
+  /* ========================================
+     LIGHT COLORS
+  ======================================== */
+
+  --color-light-400: #9ca3af;
+  --color-light-500: #6b7280;
+  --color-light-700: #e5e7eb;
+  --color-light-800: #f3f4f6;
+  --color-light-850: #fafafa;
+  --color-light-900: #ffffff;
+
+  /* ========================================
+     EXTRA COLORS
+  ======================================== */
+
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+
+  /* ========================================
+     RADII
+  ======================================== */
+
+  --radius-2: 12px;
+  --radius-1_5: 10px;
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* ========================================
+     SHADOWS
+  ======================================== */
+
+  --shadow-light-100: 0px 10px 25px rgba(0, 0, 0, 0.06);
+
+  --shadow-light-200: 0px 15px 35px rgba(0, 0, 0, 0.08);
+
+  --shadow-dark-100: 0px 10px 30px rgba(255, 59, 48, 0.08);
+
+  --shadow-dark-200: 0px 15px 40px rgba(255, 59, 48, 0.12);
+
+  /* ========================================
+     BACKGROUND IMAGES
+  ======================================== */
+
+  --background-image-hero-dark: url("/images/gym-dark.jpg");
+
+  --background-image-hero-light: url("/images/gym-light.jpg");
+  
+  /* ========================================
+     fonts
+  ======================================== */
+
   --font-iceland: var(--font-iceland);
   --font-frans: var(--font-frans);
   --font-asap: var(--font-asap);
+}
+
+@utility background-light850_dark100 {
+  @apply bg-light-850 dark:bg-dark-100;
+}
+
+@utility background-light900_dark200 {
+  @apply bg-light-900 dark:bg-dark-200;
+}
+
+@utility background-light900_dark300 {
+  @apply bg-light-900 dark:bg-dark-300;
+}
+
+@utility background-light800_dark400 {
+  @apply bg-light-800 dark:bg-dark-400;
+}
+
+@utility background-light700_dark400 {
+  @apply bg-light-700 dark:bg-dark-400;
+}
+
+@utility text-dark100_light900 {
+  @apply text-dark-100 dark:text-light-900;
+}
+
+@utility text-dark300_light700 {
+  @apply text-dark-300 dark:text-light-700;
+}
+
+@utility text-dark400_light700 {
+  @apply text-dark-400 dark:text-light-700;
+}
+
+@utility text-dark500_light400 {
+  @apply text-dark-500 dark:text-light-400;
+}
+
+@utility text-primary {
+  @apply text-primary-500;
+}
+
+@utility light-border {
+  @apply border-light-800 dark:border-dark-400;
+}
+
+@utility strong-border {
+  @apply border-primary-500/20;
+}
+
+@utility flex-center {
+  @apply flex items-center justify-center;
+}
+
+@utility flex-between {
+  @apply flex items-center justify-between;
+}
+
+@utility flex-start {
+  @apply flex items-center justify-start;
+}
+
+@utility container-width {
+  @apply max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
+}
+
+@utility smooth-transition {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+@utility btn-primary {
+  @apply bg-primary-500
+  hover:bg-red-600
+  text-white
+  px-6 py-3
+  rounded-xl
+  font-semibold
+  smooth-transition;
+}
+
+@utility btn-secondary {
+  @apply border border-white/10
+  bg-white/5
+  hover:bg-white/10
+  text-white
+  px-6 py-3
+  rounded-xl
+  backdrop-blur-md
+  smooth-transition;
 }
