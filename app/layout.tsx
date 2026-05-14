@@ -1,28 +1,29 @@
-import localFont from 'next/font/local'
+import localFont from "next/font/local";
 import "./globals.css";
+import ThemeProvider from "@/context/Theme";
 
 const iceland = localFont({
-  src:"../public/fonts/iceland.ttf",
-  variable:"--font-iceland",
-  weight:"100 200 300 400 500 600 700 800 800 900",
-})
+  src: "../public/fonts/iceland.ttf",
+  variable: "--font-iceland",
+  weight: "100 200 300 400 500 600 700 800 800 900",
+});
 
 const frans = localFont({
-  src:"../public/fonts/frans.ttf",
-  variable:"--font-frans",
-  weight:"100 200 300 400 500 600 700 800 800 900",
-})
+  src: "../public/fonts/frans.ttf",
+  variable: "--font-frans",
+  weight: "100 200 300 400 500 600 700 800 800 900",
+});
 
-const asap= localFont({
-  src:"../public/fonts/asap.ttf",
-  variable:"--font-asap",
-  weight:"100 200 300 400 500 600 700 800 800 900",
-})
+const asap = localFont({
+  src: "../public/fonts/asap.ttf",
+  variable: "--font-asap",
+  weight: "100 200 300 400 500 600 700 800 800 900",
+});
 
-export const metadata ={
+export const metadata = {
   title: "GYMFIT",
-  description: "Live Healthy and make Environment Healthy"
-}
+  description: "Live Healthy and make Environment Healthy",
+};
 
 export default function RootLayout({
   children,
@@ -35,7 +36,11 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${iceland.variable} ${frans.variable} ${asap.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          {children}
+          </ThemeProvider>
+      </body>
     </html>
   );
 }
