@@ -89,8 +89,8 @@ export const membershipPlans = [
 
 const Memberships = () => {
   return (
-    <section className="min-h-screen w-full bg-white transition-colors duration-300 dark:bg-black">
-      <div className="relative flex h-full w-full flex-col px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+    <section className="min-h-screen w-full bg-white transition-colors duration-300 dark:bg-black ">
+      <div className="relative  flex h-full w-full flex-col px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         <header className="mb-12 flex flex-col items-center gap-2 sm:mb-16 sm:gap-4">
           <h2 className="font-frans text-lg text-red-600 sm:text-2xl dark:text-red-500">Choose your Plan</h2>
           <h1 className="font-frans text-center text-4xl text-black sm:text-5xl lg:text-6xl dark:text-white">
