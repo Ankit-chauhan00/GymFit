@@ -1,9 +1,12 @@
+import { auth } from "@/auth";
 import Interface from "@/components/3d/Interface";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 
-const Home = () => {
+const Home = async () => {
+  const sessiion = await auth()
+  console.log(sessiion);
   return (
     <section className="min-h-screen w-full bg-white dark:bg-black">
       <div className="flex min-h-screen w-full flex-col md:flex-row">

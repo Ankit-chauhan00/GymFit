@@ -1,3 +1,13 @@
+interface SignInWithAuthParams{
+    provider: "github" | "google";
+    providerAccountId: string;
+    user: {
+        name: string;
+        username: string;
+        email: string;
+        image: string;
+    };
+}
 interface ActionResponse<T = null>  {
     success: boolean;
     data?: T;

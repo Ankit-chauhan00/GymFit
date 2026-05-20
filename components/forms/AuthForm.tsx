@@ -8,6 +8,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import ROUTES from "@/constants/routes";
 
 interface AuthFormProps<T extends FieldValues> {
   schema: z.ZodType<T>;
@@ -17,12 +20,26 @@ interface AuthFormProps<T extends FieldValues> {
 }
 
 const AuthForm = <T extends FieldValues>({ schema, formType, onSubmit, defaultValues }: AuthFormProps<T>) => {
+  
+  const router = useRouter();
+
   const form = useForm<T>({
     resolver: zodResolver(schema) as any,
     defaultValues: defaultValues as DefaultValues<T>,
   });
 
-  const handleSubmit: SubmitHandler<T> = async () => {};
+  const handleSubmit: SubmitHandler<T> = async (data) => {
+    const result = (await onSubmit(data)) as ActionResponse;
+
+    if(result?.success){
+      toast("Success",{
+        description: formType === "SIGN_IN" ? "Signed in Successfully": "Signed up Successfully"
+      })
+      router.push(ROUTES.HOME);
+    }else{
+      toast.error(result?.error?.message || `Error ${result?.status}` )
+    }
+  };
 
   const buttonText = formType === "SIGN_IN" ? "Sign In" : "Sign Up";
 
@@ -38,7 +55,7 @@ const AuthForm = <T extends FieldValues>({ schema, formType, onSubmit, defaultVa
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form id="form-rhf-demo" onSubmit={form.handleSubmit(()=>handleSubmit)} className="space-y-4 sm:space-y-6">
+        <form id="form-rhf-demo" onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 sm:space-y-6">
           {Object.keys(defaultValues).map((fieldName) => (
             <FieldGroup key={fieldName}>
               <Controller

@@ -5,7 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { SignInSchema } from "./lib/validation";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-
+import { api } from "./lib/api";
 
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -70,7 +70,31 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
 
       return token;
+    },
+    async signIn({user, profile, account}){
+      if (account?.type === "credentials") return true;
+      if (!account || !user) return false;
+
+      const userInfo = {
+        name: user.name!,
+        email: user.email!,
+        image: user.image!,
+        username: account.provider === 'github'
+        ? (profile?.login as string)
+        : (user.name?.toLocaleLowerCase() as string),
+      };
+
+      const {success} = (await api.auth.aAuthSignIn({
+        user: userInfo,
+        provider: account.provider as "github" | "google",
+        providerAccountId: account.providerAccountId
+      })) as ActionResponse;
+
+      if(!success) return false
+      return true;
+
     }
+
 
   }
 });

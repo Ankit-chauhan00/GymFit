@@ -1,5 +1,17 @@
 import z from "zod";
 
+
+export const SigninWithOAuthSchema = z.object({
+  provider: z.enum(["github", "google"]),
+  providerAccountId: z.string().min(1, {message: "Provider Account Required"}),
+  user: z.object({
+     name: z.string().min(1, "Name is required"),
+    username: z.string().min(3, "Username must be at least 3 characters"),
+    email: z.email("Invalid email address"),
+    image: z.url("Invalid image URL").optional(),
+  })
+})
+
 export const SignUpSchema = z.object({
   username: z
     .string()
