@@ -8,6 +8,7 @@ import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { auth } from "@/auth";
 import { User } from "@/generated/prisma/client";
+import { ActionResponse, AdminCreationParams } from "@/types/action";
 
 export async function CreateAdmin(params: AdminCreationParams): Promise<ActionResponse> {
   const session = await auth();
@@ -69,9 +70,15 @@ export async function CreateAdmin(params: AdminCreationParams): Promise<ActionRe
   }
 }
 
+type SafeUser = Omit<User, "password">;
+
 export async function getUsers(
   params: PaginatedSearchParams
-): Promise<ActionResponse<{ users: User[]; isNext: boolean }>> {
+): Promise<ActionResponse<{ users: SafeUser[]; isNext: boolean }>> {
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") {
+    throw new Error("Unauthorized");
+  }
   const validationResult = await action({
     params,
     schema: PaginatedSearchParamsSchema,
@@ -79,7 +86,7 @@ export async function getUsers(
 
   if (validationResult instanceof Error) return handleError(validationResult) as ErrorResponse;
 
-  const { page = 1, pageSize = 1, query, filter } = await params;
+  const { page = 1, pageSize = 1, query, filter } = params;
 
   // search Query
   const where = query
@@ -93,6 +100,12 @@ export async function getUsers(
           },
           {
             email: {
+              contains: query,
+              mode: "insensitive" as const,
+            },
+          },
+          {
+            username: {
               contains: query,
               mode: "insensitive" as const,
             },
@@ -123,16 +136,18 @@ export async function getUsers(
   const skip = (page - 1) * pageSize;
 
   try {
-    const totalUsers = await prisma.user.count({
-      where,
-    });
+    const [totalUsers, users] = await Promise.all([
+      prisma.user.count({
+        where,
+      }),
 
-    const users = await prisma.user.findMany({
-      where,
-      orderBy,
-      skip,
-      take: pageSize,
-    });
+      prisma.user.findMany({
+        where,
+        orderBy,
+        skip,
+        take: pageSize,
+      }),
+    ]);
 
     const isNext = totalUsers > skip + users.length;
 
@@ -140,8 +155,40 @@ export async function getUsers(
       success: true,
       data: {
         users,
-        isNext
+        isNext,
       },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function DeleteUser(userId: string) {
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") {
+    throw new Error("Unauthorized");
+  }
+  if (session.user.id === userId) {
+    throw new Error("You cannot delete yourself");
+  }
+
+  try {
+    await prisma.$transaction([
+      prisma.account.deleteMany({
+        where: {
+          userId,
+        },
+      }),
+
+      prisma.user.delete({
+        where: {
+          id: userId,
+        },
+      }),
+    ]);
+
+    return {
+      success: true,
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

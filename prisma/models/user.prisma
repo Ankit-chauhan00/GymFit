@@ -4,6 +4,8 @@ enum Role {
   TRAINER
 }
 
+
+
 model User {
   id           String    @id @default(cuid())
 

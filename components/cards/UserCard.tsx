@@ -1,8 +1,11 @@
+"use client";
 import type { User } from "@/generated/prisma/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DeleteUser } from "@/lib/actions/admin.action";
+import { SafeUser } from "@/types/action";
 
 interface UserCardProps {
-  user: User;
+  user: SafeUser;
 }
 
 const roleStyles: Record<NonNullable<User["role"]>, string> = {
@@ -12,7 +15,7 @@ const roleStyles: Record<NonNullable<User["role"]>, string> = {
 };
 
 const UserCard = ({
-  user: { name, image, username, email, role, createdAt },
+  user: { name, image, username, email, role, createdAt, id },
 }: UserCardProps) => {
   const displayName = name || username || "Unknown User";
   const initials = displayName
@@ -89,6 +92,9 @@ const UserCard = ({
           View profile
         </button>
         <button 
+        onClick={async ()=>{
+            await DeleteUser(id);
+        }}
         className="inline-flex items-center justify-center rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700">
           Remove user
         </button>
