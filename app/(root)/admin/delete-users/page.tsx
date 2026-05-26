@@ -17,12 +17,13 @@ const DeleteUser = async ({ searchParams }: SearchParams) => {
   const { page, pageSize, query, filter } = await searchParams;
   const { success, data, error } = await getUsers({
     page: Number(page) || 1,
-    pageSize: Number(pageSize) || 10,
+    pageSize: Number(pageSize) || 3,
     query: query || "",
     filter: filter || "",
   });
 
-  const { users, isNext } = data || {};
+  const { users, isNext} = data || {};
+  console.log(users)
 
   return (
     <section className="min-h-full w-full bg-slate-50 px-4 py-8 sm:px-6 lg:px-8 dark:bg-zinc-950">
@@ -71,7 +72,7 @@ const DeleteUser = async ({ searchParams }: SearchParams) => {
           </div>
 
           <div className="flex justify-center">
-            <Pagination page={page} isNext={isNext || false} containerClasses="w-full max-w-md" />
+            <Pagination page={page} isNext={isNext} containerClasses="w-full max-w-md" />
           </div>
         </div>
       </div>

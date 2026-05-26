@@ -69,7 +69,9 @@ export async function CreateAdmin(params: AdminCreationParams): Promise<ActionRe
   }
 }
 
-export async function getUsers(params: PaginatedSearchParams): Promise<ActionResponse<{ users: User[] }>> {
+export async function getUsers(
+  params: PaginatedSearchParams
+): Promise<ActionResponse<{ users: User[]; isNext: boolean }>> {
   const validationResult = await action({
     params,
     schema: PaginatedSearchParamsSchema,
@@ -77,7 +79,7 @@ export async function getUsers(params: PaginatedSearchParams): Promise<ActionRes
 
   if (validationResult instanceof Error) return handleError(validationResult) as ErrorResponse;
 
-  const { page = 1, pageSize = 10, query, filter } = await params;
+  const { page = 1, pageSize = 1, query, filter } = await params;
 
   // search Query
   const where = query
@@ -121,6 +123,10 @@ export async function getUsers(params: PaginatedSearchParams): Promise<ActionRes
   const skip = (page - 1) * pageSize;
 
   try {
+    const totalUsers = await prisma.user.count({
+      where,
+    });
+
     const users = await prisma.user.findMany({
       where,
       orderBy,
@@ -128,10 +134,13 @@ export async function getUsers(params: PaginatedSearchParams): Promise<ActionRes
       take: pageSize,
     });
 
+    const isNext = totalUsers > skip + users.length;
+
     return {
       success: true,
       data: {
         users,
+        isNext
       },
     };
   } catch (error) {
