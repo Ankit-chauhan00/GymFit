@@ -3,9 +3,9 @@ import "./globals.css";
 import ThemeProvider from "@/context/Theme";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
-import AuthProvider from "@/context/AuthProvider";
 import { auth } from "@/auth";
 import { Toaster } from "sonner";
+import { SessionProvider } from "next-auth/react";
 
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
@@ -55,12 +55,12 @@ export  default async function RootLayout({
       )}
     >
       <body className="flex min-h-full flex-col">
-        <AuthProvider session={session}>
+        <SessionProvider session={session}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             {children}
             <Toaster/>
           </ThemeProvider>
-        </AuthProvider>
+        </SessionProvider>
       </body>
     </html>
   );

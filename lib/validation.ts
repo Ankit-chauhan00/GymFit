@@ -53,3 +53,19 @@ export const SignInSchema = z.object({
     .min(6, { message: "Password must be at least 6 characters long." })
     .max(100, { message: "Password cannot exceed 100 characters." }),
 });
+
+export const AdminFormschema = z.object({
+  email: z.email().min(1,{message: "Email is Required"}).transform((value)=>value.trim().toLowerCase()),
+  password: z.string().min(6,"password must be 6 character long"),
+  image: z.string().optional(),
+  username: z.string().min(1,{message: "username is Required"}),
+  name: z.string().min(1,{message:" name is Required"})
+})
+
+export const PaginatedSearchParamsSchema = z.object({
+  page: z.number().int().positive().default(1),
+  pageSize: z.number().int().default(10),
+  query: z.string().optional(),
+  filter: z.string().optional(),
+  sort: z.string().optional(),
+});

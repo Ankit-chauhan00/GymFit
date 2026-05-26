@@ -24,3 +24,11 @@ interface AuthCredentials {
     email: string;
     password: string;
 }
+
+interface AdminCreationParams {
+    name: string;
+    username: string;
+    email: string;
+    password: string;
+    image?: string;
+}
