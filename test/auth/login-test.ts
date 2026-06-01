@@ -4,7 +4,7 @@ import { check, sleep } from "k6";
 
 
 export const options = {
-  vus: 2000,
+  vus: 1000,
   duration: "30s",
 };
 
@@ -23,7 +23,7 @@ export default function () {
   };
 
   const res = http.post(
-    "http://localhost:3000/api/auth/signin",
+    "https://gym-project-prra.vercel.app/api/auth/callback/credentials",
     payload,
     params
   );
