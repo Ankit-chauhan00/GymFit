@@ -8,7 +8,6 @@ import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { auth } from "@/auth";
 import { ActionResponse, AdminCreationParams, CreateTrainerParams, SafeUser } from "@/types/action";
-import { revalidatePath } from "next/cache";
 
 export async function CreateAdmin(params: AdminCreationParams): Promise<ActionResponse> {
   const session = await auth();
@@ -184,8 +183,6 @@ export async function DeleteUser(userId: string) {
         },
       }),
     ]);
-
-    revalidatePath("/admin/delete-user");
 
     return {
       success: true,

@@ -35,7 +35,8 @@ const AdminForm = <T extends FieldValues>({ schema, onSubmit, defaultValues }: A
     })) as ActionResponse;
 
     if (result?.success) {
-      window.location.href = "/";
+      toast.success("Admin Added Successfully");
+      form.reset();
     } else {
       toast.error(result?.error?.message || `Error ${result?.status}`);
     }

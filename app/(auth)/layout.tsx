@@ -2,12 +2,22 @@
 import SocialAuthForm from "@/components/forms/SocialAuthForm";
 import Theme from "@/components/navigation/navbar/Theme";
 import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { ReactNode } from "react";
+import { redirect, usePathname, useRouter } from "next/navigation";
+import React, { ReactNode, } from "react";
+import { toast } from "sonner";
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  if (session?.user) {
+    toast.error("User Alredy Logged in");
+    redirect("/");
+  }
+
   const pathname = usePathname();
   const isSignIn = pathname?.includes("sign-in");
 
@@ -25,7 +35,7 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
 
         <div className="font-frans flex items-center gap-2">
           <div className="mr-3">
-            <Theme/>
+            <Theme />
           </div>
           <p className="text-xs text-black sm:text-base dark:text-white">
             {isSignIn ? "Don't have an account?" : "Already have an account?"}
@@ -39,7 +49,7 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
       </div>
 
       {/* Left Form - Full width on mobile, 50% on desktop */}
-      <div className="flex w-full flex-col items-center justify-center px-4 py-20 sm:px-10 sm:py-0 sm:width-1/2 md:w-1/2">
+      <div className="sm:width-1/2 flex w-full flex-col items-center justify-center px-4 py-20 sm:px-10 sm:py-0 md:w-1/2">
         <div className="w-full max-w-md">{children}</div>
         <div className="mt-6 w-full max-w-md">
           <SocialAuthForm />
