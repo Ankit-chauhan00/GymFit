@@ -134,7 +134,7 @@ const TrainerForm = <T extends FieldValues>({ schema, defaultValues, onSubmit }:
 
         <Field orientation="horizontal" className="font-asap flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
           <Button
-            className="w-full rounded-2xl bg-slate-700 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-600 sm:w-auto"
+            className="w-full rounded-2xl  bg-red-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-red-600 sm:w-auto"
             type="button"
             onClick={() => form.reset()}
           >

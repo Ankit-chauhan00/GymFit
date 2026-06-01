@@ -9,8 +9,9 @@ Title: Shirtless Athlete in Black Shorts
 
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
+import { ThreeElements } from "@react-three/fiber";
 
-export function Athlete(props) {
+export function Athlete(props: ThreeElements["group"]) {
   const { nodes, materials } = useGLTF('/models/athlete.glb')
   return (
     <group {...props} dispose={null}>

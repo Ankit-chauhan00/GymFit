@@ -18,11 +18,11 @@ const Adminsidebar = () => {
   const pathname = usePathname() || "/";
 
   return (
-    <nav className="min-h-screen w-1/5 lg:sticky lg:top-28 lg:self-start bg-white/95 border border-slate-200 dark:bg-zinc-950/95 dark:border-zinc-800 rounded-lg shadow-sm">
-      <div className=" flex flex-col px-4 py-6 lg:px-6 lg:py-8  gap-8">
+    <nav className="min-h-screen w-1/5 lg:sticky lg:top-28 lg:self-start items-center  bg-white/95 border border-slate-200 dark:bg-zinc-950/95 dark:border-zinc-800 rounded-lg shadow-sm">
+      <div className=" flex flex-col px-4 py-6 lg:px-6 lg:py-8  gap-8 justify-center md:items-center items-start ">
         <div className="mb-6 flex items-center gap-3">
           <LayoutDashboardIcon className="h-5 w-5 text-slate-700 dark:text-slate-300" />
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Management</h2>
+          <h2 className="hidden md:block text-lg font-semibold text-slate-900 dark:text-white">Management</h2>
         </div>
 
         <ul className="flex flex-col gap-3">
@@ -46,7 +46,7 @@ const Adminsidebar = () => {
                     <Icon className="h-5 w-5" />
                   </span>
 
-                  <span className="text-sm font-medium text-slate-900 dark:text-slate-100">{item.label}</span>
+                  <span className="hidden md:block text-sm font-medium text-slate-900 dark:text-slate-100">{item.label}</span>
                 </Link>
               </li>
             );

@@ -30,4 +30,12 @@ interface PaginatedSearchParams {
   sort?: string;
 }
 
+interface CreateMemberships{
+  name: string;
+  description?: string;
+  price: number;
+  durationDays: number;
+  image: string;
+}
+
 

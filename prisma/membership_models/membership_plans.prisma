@@ -1,0 +1,18 @@
+model MembershipPlans {
+    id           String    @id @default(cuid())
+
+    name         String   @unique
+
+    desctiption  String?
+
+    price        Float
+
+    durationDays Int
+
+    image        String?
+
+    isActive     Boolean    @default(true)
+
+    createdAt    DateTime   @default(now())
+    updatedAt    DateTime   @updatedAt    
+}

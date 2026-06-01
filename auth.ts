@@ -6,6 +6,7 @@ import { SignInSchema } from "./lib/validation";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { api } from "./lib/api";
+import { ActionResponse } from "./types/action";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -52,7 +53,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           id: user.id.toString(),
           name: user.name,
           email: user.email,
-          image: user?.imageUrl,
+          image: user?.image,
           role: user.role,
         };
       },
