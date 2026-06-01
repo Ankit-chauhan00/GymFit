@@ -87,24 +87,32 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async signIn({ user, profile, account }) {
       if (account?.type === "credentials") return true;
-      if (!account || !user) return false;
+      if (!account || !user) {
+        console.log("Missing account or user")
+        return false
+      }
 
       const userInfo = {
         name: user.name!,
         email: user.email!,
-        image: user.image!,
+        image: user.image ?? "",
         username:
           account.provider === "github" ? (profile?.login as string) : (user.name?.toLocaleLowerCase() as string),
       };
 
-      const { success } = (await api.auth.oAuthSignIn({
+      console.log("OAuth User Info:", userInfo);
+
+      const response = (await api.auth.oAuthSignIn({
         user: userInfo,
         provider: account.provider as "github" | "google",
         providerAccountId: account.providerAccountId,
       })) as ActionResponse;
 
-      if (!success) return false;
+      console.log("OAuth API Response:", response );
+
       return true;
+      // if (!success) return false;
+      // return true;
     },
   },
 });
