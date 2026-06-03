@@ -28,6 +28,7 @@ interface PaginatedSearchParams {
   query?: string;
   filter?: string;
   sort?: string;
+  isVerified?: boolean;
 }
 
 interface CreateMemberships {
@@ -41,3 +42,4 @@ interface CreateMemberships {
 type SerializedProduct = Omit<Product, "price"> & {
   price: number;
 };
+type TrainerWithUser = Trainer & { user: { image: string | null; name: string | null } };

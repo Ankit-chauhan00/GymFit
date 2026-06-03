@@ -66,6 +66,7 @@ export const PaginatedSearchParamsSchema = z.object({
   query: z.string().optional(),
   filter: z.string().optional(),
   sort: z.string().optional(),
+  isVerified: z.boolean().optional(),
 });
 
 export const TrainerSchema = z.object({

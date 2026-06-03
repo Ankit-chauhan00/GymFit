@@ -1,16 +1,14 @@
 import Image from "next/image";
-import React from "react";
 
 interface Trainer {
   id: number;
   name: string;
   role: string;
+  email: string;
   specialization: string;
-  image: string;
+  image?: string | null;
   experience: number;
-  certification: string;
-  rating: number;
-  clients: number;
+  clients?: number;
   isActive: boolean;
 }
 
@@ -20,89 +18,117 @@ interface TrainerCardProps {
 }
 
 const TrainerCard = ({
-  data: { name, role, specialization, image, experience, certification, rating, clients, isActive },
+  data: {
+    name,
+    role = "TRAINER",
+    specialization,
+    image,
+    experience,
+    isActive,
+    email,
+    clients,
+  },
   variant = "compact",
 }: TrainerCardProps) => {
   const isFull = variant === "full";
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white text-black transition-all duration-300 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white">
-      {/* Image */}
-      <div className={`relative w-full overflow-hidden ${isFull ? "h-80 sm:h-96 lg:h-[500px]" : "h-56 sm:h-64"}`}>
-        <Image src={image} fill alt="trainer" className="object-cover" />
+    <div className="group overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl dark:border-zinc-800 dark:bg-zinc-950 dark:text-white">
+      
+      {/* Image Section */}
+      <div
+        className={`relative overflow-hidden ${
+          isFull ? "h-[500px]" : "h-72"
+        }`}
+      >
+        <Image
+          src={image?.trim() ? image : "/images/default-user.jpg"}
+          fill
+          alt={name}
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-      </div>
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
 
-      {/* Content */}
-      <div className="p-4 sm:p-5 lg:p-6">
-        <div className="flex items-start justify-between gap-3 sm:gap-4">
-          <div className="flex-1">
-            <h2
-              className={`leading-tight font-black uppercase ${
-                isFull ? "text-2xl sm:text-3xl lg:text-4xl" : "text-xl sm:text-2xl"
-              }`}
-            >
-              {name}
-            </h2>
-
-            <p className="mt-1 text-xs tracking-widest text-red-500 uppercase sm:text-sm">{role}</p>
-          </div>
-
+        {/* Status Badge */}
+        <div className="absolute top-4 right-4">
           <span
-            className={`flex-shrink-0 rounded-full px-2 py-1 text-xs font-semibold whitespace-nowrap sm:px-3 ${
+            className={`rounded-full px-3 py-1 text-xs font-bold uppercase backdrop-blur-md ${
               isActive
-                ? "bg-green-500/20 text-green-400 dark:bg-green-500/20 dark:text-green-400"
-                : "bg-red-500/20 text-red-400 dark:bg-red-500/20 dark:text-red-400"
+                ? "bg-green-500/20 text-green-300 border border-green-400/30"
+                : "bg-red-500/20 text-red-300 border border-red-400/30"
             }`}
           >
             {isActive ? "Active" : "Offline"}
           </span>
         </div>
 
-        <p className={`mt-3 text-gray-600 dark:text-zinc-400 ${isFull ? "text-base" : "text-xs sm:text-sm"}`}>
-          {specialization}
-        </p>
+        {/* Bottom Content */}
+        <div className="absolute bottom-0 w-full p-6 text-white">
+          <p className="text-xs tracking-[0.3em] text-red-400 uppercase">
+            {role}
+          </p>
 
-        {/* Compact View */}
-        {!isFull && (
-          <div className="mt-4 flex items-center justify-between text-xs text-gray-700 sm:mt-5 sm:text-sm dark:text-zinc-300">
-            <span>{experience}+ Years</span>
-            <span>⭐ {rating}</span>
-            <span>{clients}+ Clients</span>
+          <h2
+            className={`mt-2 font-black uppercase leading-tight ${
+              isFull ? "text-4xl" : "text-2xl"
+            }`}
+          >
+            {name}
+          </h2>
+
+          <p className="mt-3 max-w-lg text-sm text-zinc-200">
+            {specialization}
+          </p>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-6">
+        
+        {/* Email */}
+        <div className="rounded-2xl bg-zinc-100 p-4 dark:bg-zinc-900">
+          <p className="text-xs font-semibold tracking-[0.2em] text-zinc-500 uppercase">
+            Contact
+          </p>
+
+          <p className="mt-2 truncate text-sm font-medium text-zinc-800 dark:text-zinc-200">
+            {email}
+          </p>
+        </div>
+
+        {/* Stats */}
+        <div className="mt-5 grid grid-cols-2 gap-4">
+          <div className="rounded-2xl bg-zinc-100 p-4 dark:bg-zinc-900">
+            <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+              Experience
+            </p>
+
+            <h3 className="mt-2 text-2xl font-black">
+              {experience}+
+            </h3>
+
+            <p className="text-sm text-zinc-500">Years</p>
           </div>
-        )}
 
-        {/* Full View */}
-        {isFull && (
-          <>
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:mt-8 sm:gap-4">
-              <div className="rounded-xl bg-gray-100 p-3 sm:p-4 dark:bg-zinc-900">
-                <p className="text-xs text-gray-600 sm:text-sm dark:text-zinc-500">Experience</p>
-                <h3 className="mt-2 text-lg font-bold sm:text-2xl">{experience}+ Years</h3>
-              </div>
+          <div className="rounded-2xl bg-zinc-100 p-4 dark:bg-zinc-900">
+            <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+              Clients
+            </p>
 
-              <div className="rounded-xl bg-gray-100 p-3 sm:p-4 dark:bg-zinc-900">
-                <p className="text-xs text-gray-600 sm:text-sm dark:text-zinc-500">Rating</p>
-                <h3 className="mt-2 text-lg font-bold sm:text-2xl">⭐ {rating}</h3>
-              </div>
+            <h3 className="mt-2 text-2xl font-black">
+              {clients || 0}+
+            </h3>
 
-              <div className="rounded-xl bg-gray-100 p-3 sm:p-4 dark:bg-zinc-900">
-                <p className="text-xs text-gray-600 sm:text-sm dark:text-zinc-500">Clients</p>
-                <h3 className="mt-2 text-lg font-bold sm:text-2xl">{clients}+</h3>
-              </div>
+            <p className="text-sm text-zinc-500">Trained</p>
+          </div>
+        </div>
 
-              <div className="rounded-xl bg-gray-100 p-3 sm:p-4 dark:bg-zinc-900">
-                <p className="text-xs text-gray-600 sm:text-sm dark:text-zinc-500">Certification</p>
-                <h3 className="mt-2 text-lg font-bold sm:text-2xl">{certification}</h3>
-              </div>
-            </div>
-
-            <button className="mt-6 w-full rounded-xl bg-red-600 py-3 text-sm font-bold tracking-wide uppercase transition hover:bg-red-700 sm:mt-8 sm:py-4 sm:text-base">
-              Book Session
-            </button>
-          </>
-        )}
+        {/* CTA */}
+        <button className="mt-6 w-full rounded-2xl bg-red-600 py-4 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-red-700">
+          Book Session
+        </button>
       </div>
     </div>
   );
