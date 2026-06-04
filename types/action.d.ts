@@ -44,8 +44,8 @@ interface CreateTrainerParams {
   username: string;
   specialization?: string;
   phone?: string;
-  experience?:string;
-  image?:string;
+  experience?: string;
+  image?: string;
   password: string;
 }
 
@@ -58,15 +58,32 @@ interface MembershipParams {
   isActive: boolean;
 }
 
+export type Category = "SUPPLEMENTS" | "EQUIPMENTS" | "ACCESSORIES";
+
+export type ProductType =
+  | "WHEY_PROTEIN"
+  | "MASS_GAINER"
+  | "PREWORKOUT"
+  | "CREATINE"
+  | "BCAA"
+  | "MULTIVITAMIN"
+  | "FISH_OIL"
+  | "SHAKER"
+  | "GYM_GLOVES"
+  | "RESISTANCE_BAND"
+  | "DUMBBELL";
+
 interface CreateProductParams {
   title: string;
   description: string;
-  price : number;
+  price: number;
   stock: number;
   images?: string[];
   modelUrl?: string;
+  category: Category;
+  productType: ProductType;
 }
 
-interface GetTrainerParams{
+interface GetTrainerParams {
   trainerId: string;
 }

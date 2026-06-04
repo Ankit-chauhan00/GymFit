@@ -2,7 +2,7 @@
 
 import { ActionResponse, CreateProductParams } from "@/types/action";
 import action from "../handlers/actions";
-import { productCreationSchema } from "../validation";
+import { productCreationActionSchema } from "../validation";
 import { auth } from "@/auth";
 import handleError from "../handlers/error";
 import { ErrorResponse, SerializedProduct } from "@/types/global";
@@ -11,7 +11,7 @@ import { searilizeProduct } from "@/constants/helper";
 
 interface ProductionCreationServerAction extends CreateProductParams {
   images?: string[];
-  model3d?: File;
+  modelUrl?: string;
 }
 
 
@@ -24,13 +24,13 @@ export async function CreateProduct(params: ProductionCreationServerAction): Pro
 
   const validationResult = await action({
     params,
-    schema: productCreationSchema,
+    schema: productCreationActionSchema,
     authorize: true,
   });
 
   if (validationResult instanceof Error) return handleError(validationResult) as ErrorResponse;
 
-  const { images, modelUrl, title, description, stock, price } = validationResult.params!;
+  const { images, modelUrl, title, description, stock, price, category, productType } = validationResult.params!;
 
   console.log("MODEL URL : ", modelUrl);
   try {
@@ -44,6 +44,8 @@ export async function CreateProduct(params: ProductionCreationServerAction): Pro
           price,
           stock,
           modelUrl,
+          category,
+          productType,
           
           CreatedByAdmin:{
             connect: {

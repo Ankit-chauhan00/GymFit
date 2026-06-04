@@ -12,11 +12,13 @@ import Image from "next/image";
 import { ActionResponse } from "@/types/action";
 import { toast } from "sonner";
 import { SerializedProduct } from "@/types/global";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CATEGORY_VALUES, PRODUCT_TYPE_VALUES } from "@/constants/config";
 
 interface ProductFromProps<T extends FieldValues> {
   schema: z.ZodType<T>;
   defaultValues: T;
-  onSubmit: (data: T) => Promise<ActionResponse<SerializedProduct>>
+  onSubmit: (data: T) => Promise<ActionResponse<SerializedProduct>>;
 }
 
 const ProductForm = <T extends FieldValues>({ schema, defaultValues, onSubmit }: ProductFromProps<T>) => {
@@ -72,69 +74,112 @@ const ProductForm = <T extends FieldValues>({ schema, defaultValues, onSubmit }:
       </CardHeader>
       <CardContent>
         <form id="form-rhf-demo" onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 sm:space-y-6">
-          {Object.keys(defaultValues).map((fieldName) => (
-            <FieldGroup key={fieldName}>
-              <Controller
-                name={fieldName as Path<T>}
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      className="text-base font-medium text-black sm:text-lg dark:text-white"
-                      htmlFor={fieldName}
-                    >
-                      {field.name === "title"
-                        ? "Product Title"
-                        : field.name === "description"
-                          ? "Product Description"
-                          : field.name === "price"
-                            ? "Enter the Product Price"
-                            : field.name === "stock"
-                              ? "Number of Available Stocks"
-                              : field.name.charAt(0).toUpperCase() + field.name.slice(1)}
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id={fieldName}
-                      type={["price", "stock"].includes(field.name) ? "number" : "text"}
-                      min={["price", "stock"].includes(field.name) ? 0 : undefined}
-                      aria-invalid={fieldState.invalid}
-                      placeholder={
-                        field.name === "email"
-                          ? "Enter your email address"
-                          : field.name === "password"
-                            ? "Enter your password"
-                            : field.name === "username"
-                              ? "Enter your username"
-                              : field.name === "name"
-                                ? "Enter your full name"
-                                : field.name === "experience"
-                                  ? "Enter experience in years"
-                                  : field.name === "stock"
-                                    ? "Number of available stocks"
-                                    : `Enter your ${field.name}`
-                      }
-                      autoComplete="off"
-                      className="border border-gray-300 bg-gray-50 text-black dark:border-gray-700 dark:bg-gray-900 dark:text-white"
-                      onChange={(e) => {
-                        const value = e.target.value;
+          {Object.keys(defaultValues)
+            .filter((fieldName) => !["category", "productType"].includes(fieldName))
+            .map((fieldName) => (
+              <FieldGroup key={fieldName}>
+                <Controller
+                  name={fieldName as Path<T>}
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel>{field.name}</FieldLabel>
 
-                        if (["price", "stock"].includes(field.name)) {
-                          field.onChange(value === "" ? "" : Number(value));
-                        } else {
-                          field.onChange(value);
+                      <Input
+                        {...field}
+                        id={fieldName}
+                        type={["price", "stock"].includes(fieldName) ? "number" : "text"}
+                        placeholder={
+                          fieldName === "title"
+                            ? "Enter name of the product"
+                            : fieldName === "description"
+                              ? "Enter the product features"
+                              : fieldName === "price"
+                                ? "Enter product price"
+                                : fieldName === "stock"
+                                  ? "Enter available stock"
+                                  : `Enter ${fieldName}`
                         }
-                      }}
-                    />
+                        onChange={(e) => {
+                          const value = e.target.value;
 
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                  </Field>
-                )}
-              />
-            </FieldGroup>
-          ))}
+                          if (["price", "stock"].includes(fieldName)) {
+                            field.onChange(value === "" ? "" : Number(value));
+                          } else {
+                            field.onChange(value);
+                          }
+                        }}
+                      />
+
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+            ))}
+
+          {/* CATEGORY SELECT */}
+
+          <FieldGroup>
+            <Controller
+              name={"category" as Path<T>}
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Product Category</FieldLabel>
+
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {CATEGORY_VALUES.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item.replaceAll("_", " ")}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+
+          {/* PRODUCT TYPE SELECT */}
+
+          <FieldGroup>
+            <Controller
+              name={"productType" as Path<T>}
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Product Type</FieldLabel>
+
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select product type" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {PRODUCT_TYPE_VALUES.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item.replaceAll("_", " ")}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+          </FieldGroup>
         </form>
       </CardContent>
+
       <CardFooter className="flex flex-col gap-4 pt-4 sm:gap-5 sm:pt-6">
         <Field>
           <FieldLabel className="text-base font-medium text-black sm:text-lg dark:text-white">

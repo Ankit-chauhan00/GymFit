@@ -1,0 +1,9 @@
+-- CreateEnum
+CREATE TYPE "Category" AS ENUM ('SUPPLEMENTS', 'EQUIPMENTS', 'ACCESSORIES');
+
+-- CreateEnum
+CREATE TYPE "ProductType" AS ENUM ('WHEY_PROTEIN', 'MASS_GAINER', 'PREWORKOUT', 'CREATINE', 'BCAA', 'MULTIVITAMIN', 'FISH_OIL', 'SHAKER', 'GYM_GLOVES', 'RESISTANCE_BAND', 'DUMBBELL');
+
+-- AlterTable
+ALTER TABLE "Product" ADD COLUMN     "category" "Category",
+ADD COLUMN     "productType" "ProductType";

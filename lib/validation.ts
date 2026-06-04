@@ -53,12 +53,15 @@ export const SignInSchema = z.object({
 });
 
 export const AdminFormschema = z.object({
-  email: z.email().min(1,{message: "Email is Required"}).transform((value)=>value.trim().toLowerCase()),
-  password: z.string().min(6,"password must be 6 character long"),
+  email: z
+    .email()
+    .min(1, { message: "Email is Required" })
+    .transform((value) => value.trim().toLowerCase()),
+  password: z.string().min(6, "password must be 6 character long"),
   image: z.string().optional(),
-  username: z.string().min(1,{message: "username is Required"}),
-  name: z.string().min(1,{message:" name is Required"})
-})
+  username: z.string().min(1, { message: "username is Required" }),
+  name: z.string().min(1, { message: " name is Required" }),
+});
 
 export const PaginatedSearchParamsSchema = z.object({
   page: z.number().int().positive().default(1),
@@ -70,36 +73,71 @@ export const PaginatedSearchParamsSchema = z.object({
 });
 
 export const TrainerSchema = z.object({
-  email: z.email().min(1,{message: "Email is required"}),
-  username: z.string().min(5,{message: "min 5 length username is required"}),
+  email: z.email().min(1, { message: "Email is required" }),
+  username: z.string().min(5, { message: "min 5 length username is required" }),
   specialization: z.string().optional(),
   phone: z.string().optional(),
   experience: z.string().optional(),
   image: z.string().optional(),
-  password: z.string()
-})
+  password: z.string(),
+});
 
 export const CreateMembershipSchema = z.object({
-  membershipName: z.string().min(1,{message: "Membership name is Required"}),
+  membershipName: z.string().min(1, { message: "Membership name is Required" }),
   description: z.string().optional(),
   membershipPrice: z.number(),
   membershipDuration: z.number().int(),
   isActive: z.boolean().default(true),
-})
+});
 
 export const productCreationSchema = z.object({
-  title : z.string().min(1, {message: "Title is Required"}),
-  description: z.string().min(1,{message: "Description is Required"}),
-  price : z.number(),
+  title: z.string().min(1, { message: "Title is Required" }),
+  description: z.string().min(1, { message: "Description is Required" }),
+  price: z.number(),
   stock: z.number().int(),
-
+  category: z.enum(["SUPPLEMENTS", "EQUIPMENTS", "ACCESSORIES"]),
+  productType: z.enum([
+    "WHEY_PROTEIN",
+    "MASS_GAINER",
+    "PREWORKOUT",
+    "CREATINE",
+    "BCAA",
+    "MULTIVITAMIN",
+    "FISH_OIL",
+    "SHAKER",
+    "GYM_GLOVES",
+    "RESISTANCE_BAND",
+    "DUMBBELL",
+  ]),
   images: z.array(z.string()).optional(),
 
-  modelUrl : z.string().optional(),
-})
+  modelUrl: z.string().optional(),
+});
+
+export const productCreationActionSchema = z.object({
+  title: z.string().min(1, { message: "Title is Required" }),
+  description: z.string().min(1, { message: "Description is Required" }),
+  price: z.number(),
+  stock: z.number().int(),
+  category: z.enum(["SUPPLEMENTS", "EQUIPMENTS", "ACCESSORIES"]),
+  productType: z.enum([
+    "WHEY_PROTEIN",
+    "MASS_GAINER",
+    "PREWORKOUT",
+    "CREATINE",
+    "BCAA",
+    "MULTIVITAMIN",
+    "FISH_OIL",
+    "SHAKER",
+    "GYM_GLOVES",
+    "RESISTANCE_BAND",
+    "DUMBBELL",
+  ]),
+  images: z.array(z.string()).optional(),
+
+  modelUrl: z.string().optional(),
+});
 
 export const GetTrainerByIdSchema = z.object({
-  trainerId: z.string().min(1, {message: "Id is required"}),
-})
-
-
+  trainerId: z.string().min(1, { message: "Id is required" }),
+});

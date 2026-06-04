@@ -1,9 +1,33 @@
+enum Category {
+  SUPPLEMENTS
+  EQUIPMENTS
+  ACCESSORIES
+}
+
+enum ProductType {
+  WHEY_PROTEIN
+  MASS_GAINER
+  PREWORKOUT
+  CREATINE
+  BCAA
+  MULTIVITAMIN
+  FISH_OIL
+  SHAKER
+  GYM_GLOVES
+  RESISTANCE_BAND
+  DUMBBELL
+}
+
 model Product {
     id           String    @id @default(cuid())
+
     title        String    
     description  String
     price        Decimal
     stock        Int
+
+    category     Category?  
+    productType  ProductType?
 
     modelUrl    String?
 

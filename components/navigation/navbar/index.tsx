@@ -31,13 +31,11 @@ const NavBar = () => {
         </p>
       </Link>
 
-      <div className="font-iceland flex-between hidden gap-10 text-2xl text-white sm:flex">
+      <div className="font-iceland flex flex-between gap-10 text-2xl text-white ">
         <Link href="/">Home</Link>
         <Link href="/memberships">Memberships</Link>
-        <Link href="/programs">Programs</Link>
         <Link href="/trainers">Trainers</Link>
-        <Link href="/pricing">Pricing</Link>
-        <Link href="/contacts">Contacts</Link>
+        <Link href="/products">Products</Link>
         {isAdmin && <Link href="/admin">Admin Panel</Link>}
       </div>
 
