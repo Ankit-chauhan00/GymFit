@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import React from "react";
 import { cn } from "@/lib/utils";
+import { div } from "three/src/nodes/math/OperatorNode.js";
 
 interface Filters {
   name: string;
@@ -14,16 +15,24 @@ interface Props {
   filters: Filters[];
   otherClasses: string;
   containerClasses?: string;
+  placeholder?: string;
+  filterKey?: string;
 }
-const CommonFilters = ({ filters, otherClasses = "", containerClasses = "" }: Props) => {
+const CommonFilters = ({
+  filters,
+  otherClasses = "",
+  containerClasses = "",
+  placeholder = "Select a filter",
+  filterKey
+}: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const paramsFilter = searchParams.get("filter");
+  const paramsFilter = searchParams.get(filterKey || "filter");
 
   const handleUpdatedParams = (value: string) => {
     const newUrl = formUrlQuerry({
       params: searchParams.toString(),
-      key: "filter",
+      key: filterKey || "filter",
       value,
     });
 
@@ -32,7 +41,7 @@ const CommonFilters = ({ filters, otherClasses = "", containerClasses = "" }: Pr
 
   return (
     <div className={cn("relative", containerClasses)}>
-      <Select onValueChange={handleUpdatedParams} defaultValue={paramsFilter || ""}>
+      <Select key={paramsFilter || "empty"} onValueChange={handleUpdatedParams} value={paramsFilter || ""}>
         <SelectTrigger
           className={cn(
             "body-regular no-focus light-border background-light800_dark300 text-dark500_light700 border px-5 py-2.5",
@@ -41,7 +50,7 @@ const CommonFilters = ({ filters, otherClasses = "", containerClasses = "" }: Pr
           aria-label="Filter options"
         >
           <div className="line-clamp-1 flex-1 text-left">
-            <SelectValue placeholder="Select a filter" />
+            <SelectValue placeholder={placeholder} />
           </div>
         </SelectTrigger>
 
