@@ -15,7 +15,7 @@ const Stat = ({ label, value }: { label: string; value: string }) => (
 
 const TrainerDetails = async ({ params }: TrainerDetailsPageProps) => {
   const { id } = await params;
-  const { success, data: trainer } = await await getTrainerById({ trainerId: id });
+  const { success, data: trainer } = await getTrainerById({ trainerId: id });
 
   if (!success || !trainer) return redirect("/404");
 

@@ -1,9 +1,9 @@
 export const DeleteUserFilters = [
-  { name: "Newest", value: "latest" },
+  { name: "Latest", value: "latest" },
   { name: "Oldest", value: "oldest" },
 ];
 export const ProductPageFilters= [
-  { name: "Newest", value: "latest" },
+  { name: "Latest", value: "latest" },
   { name: "Oldest", value: "oldest" },
 ];
 

@@ -13,6 +13,9 @@ interface ProductionCreationServerAction extends CreateProductParams {
   images?: string[];
   modelUrl?: string;
 }
+interface GetProductById {
+  productId:
+}
 
 
 
@@ -73,3 +76,5 @@ export async function CreateProduct(params: ProductionCreationServerAction): Pro
     return handleError(error) as ErrorResponse;
   }
 }
+
+export async function GetProduct(params:)
