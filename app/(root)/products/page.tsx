@@ -5,30 +5,16 @@ import CommonFilters from "@/components/filters/CommonFilters";
 import PriceFilter from "@/components/filters/PriceFilter";
 import Pagination from "@/components/Pagination";
 import LoaclSearch from "@/components/search/LoaclSearch";
-import ProductsideBar from "@/components/sidebars/ProductsideBar";
 
 import { ProductCategoryFilters, ProductPageFilters, ProductTypeFilters } from "@/constants/filter";
 import { DEFAULT_EMPTY } from "@/constants/states";
 import { getFilteredProducts } from "@/lib/actions/product.action";
-import { Category, ProductType } from "@prisma/client";
-import { Decimal } from "@prisma/client/runtime/client";
+import { ProductWithSingleImageProps } from "@/types/global";
 
 import Link from "next/link";
 
 interface SearchParams {
   searchParams: Promise<Record<string, string | undefined>>;
-}
-
-export interface ProductWithSingleImageProps {
-  id: string;
-  title: string;
-  price: Decimal;
-  stock: number;
-  category: Category | null;
-  productType: ProductType | null;
-  images: {
-    imageUrl: string;
-  }[];
 }
 
 const ProductSections = async ({ searchParams }: SearchParams) => {
@@ -49,6 +35,9 @@ const ProductSections = async ({ searchParams }: SearchParams) => {
 
   const products = data?.products || [];
   const isNext = data?.isNext || false;
+
+
+  
 
   return (
     <section className="min-h-screen w-full bg-white py-20 text-slate-950 transition-colors duration-300 dark:bg-black dark:text-white">
@@ -114,28 +103,25 @@ const ProductSections = async ({ searchParams }: SearchParams) => {
           </div>
         </header>
 
-          <div className="flex flex-wrap justify-between  gap-3">
-            <DataRenderer
-              success={success}
-              error={error}
-              data={products}
-              empty={DEFAULT_EMPTY}
-              render={(products: ProductWithSingleImageProps[]) => (
-                <div className="flex flex-wrap items-center justify-center gap-5">
-                  {products.map((product) => (
-                    <Link key={product.id} href={`/products/${product.id}`}>
-                      <ProductCard data={product} />
-                    </Link>
-                  ))}
-                </div>
-              )}
-            />
-            <Pagination isNext={isNext} page={page} />
-          </div>
-
-
+        <div className="flex flex-wrap justify-between gap-3">
+          <DataRenderer
+            success={success}
+            error={error}
+            data={products}
+            empty={DEFAULT_EMPTY}
+            render={(products: ProductWithSingleImageProps[]) => (
+              <div className="flex flex-wrap items-center justify-center gap-5">
+                {products.map((product) => (
+                  <Link key={product.id} href={`/products/${product.id}`}>
+                    <ProductCard data={product} />
+                  </Link>
+                ))}
+              </div>
+            )}
+          />
+          <Pagination isNext={isNext} page={page} />
         </div>
-
+      </div>
     </section>
   );
 };

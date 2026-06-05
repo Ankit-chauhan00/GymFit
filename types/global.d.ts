@@ -48,3 +48,16 @@ interface RouteParams {
   params: Promise<Record<string, string>>;
   searchParams: Promise<Record<string, string>>;
 }
+
+export interface ProductWithSingleImageProps {
+  id: string;
+  title: string;
+  price: Decimal;
+  stock: number;
+  modelUrl: string | null;
+  category: Category | null;
+  productType: ProductType | null;
+  images: {
+    imageUrl: string;
+  }[];
+}

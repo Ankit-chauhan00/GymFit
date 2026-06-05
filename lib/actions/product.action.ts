@@ -8,7 +8,7 @@ import handleError from "../handlers/error";
 import { ErrorResponse, SerializedProduct } from "@/types/global";
 import prisma from "../prisma";
 import { searilizeProduct } from "@/constants/helper";
-import { Category, Prisma,  ProductType } from "@prisma/client";
+import { Category, Prisma, ProductType } from "@prisma/client";
 import { redis } from "../redis";
 
 interface ProductionCreationServerAction extends CreateProductParams {
@@ -26,6 +26,7 @@ type ProductWithSingleImage = Prisma.ProductGetPayload<{
     price: true;
     stock: true;
     category: true;
+    modelUrl: true;
     productType: true;
 
     images: {
@@ -109,6 +110,22 @@ export async function GetProduct(params: GetProductById): Promise<ActionResponse
   const { productId } = validationResult.params!;
 
   try {
+    const cacheKey = `product:${productId}`;
+
+    // CHECK REDIS CACHE
+    const cachedProduct = await redis.get(cacheKey);
+
+    if (cachedProduct) {
+      console.log("CACHE HIT");
+
+      return {
+        success: true,
+        data: JSON.parse(cachedProduct),
+      };
+    }
+
+    console.log("CACHE MISS");
+
     const product = await prisma.product.findUnique({
       where: {
         id: productId,
@@ -128,6 +145,9 @@ export async function GetProduct(params: GetProductById): Promise<ActionResponse
       ...product,
       images: product?.images.map((img) => img.imageUrl),
     };
+
+    // STORE IN REDIS
+    await redis.set(cacheKey, JSON.stringify(flatternProduct), "EX", 60 * 60)
 
     return { success: true, data: flatternProduct };
   } catch (error) {
@@ -226,6 +246,7 @@ export async function getFilteredProducts(
         price: true,
         stock: true,
         category: true,
+        modelUrl: true,
         productType: true,
 
         images: {

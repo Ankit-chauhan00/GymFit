@@ -13,13 +13,14 @@ interface ProductCardProps {
     title: string;
     price: Decimal;
     stock: number;
+    modelUrl: string | null;
     category: Category | null;
     productType: ProductType | null;
     images: ProductImage[];
   };
 }
 
-const ProductCard = ({ data: { title, price, category, images } }: ProductCardProps) => {
+const ProductCard = ({ data: { title, price, category, images} }: ProductCardProps) => {
   const imageUrl = images?.[0]?.imageUrl || "/placeholder.png";
 
   return (

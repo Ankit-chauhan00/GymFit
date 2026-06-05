@@ -25,7 +25,9 @@ const ProductDetails = async ({ params }: ProductDetailsParams) => {
     );
   }
 
-  const { title, description, price, stock, modelUrl, productType, images, category } = product!;
+  const { title, description, price, stock, modelUrl,  images, category,  } = product!;
+
+  console.log(modelUrl);
 
   return (
     <section className="w-full px-4 py-10 pt-20 md:px-8 lg:px-16">
