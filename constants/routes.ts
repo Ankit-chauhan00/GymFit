@@ -6,7 +6,8 @@ const ROUTES = {
 
     TRAINER: (id: string) => `/trainers/${id}`,
     PRODUCT: (id: string) => `/products/${id}`,
-
+    PRODUCT3D: (id: string)=> `/products/${id}/3d-section`,
+    
     ADMIN_DELET_USER:"/admin/delete-users"
 
 }

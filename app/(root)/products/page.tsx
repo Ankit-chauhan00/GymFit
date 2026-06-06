@@ -63,7 +63,7 @@ const ProductSections = async ({ searchParams }: SearchParams) => {
             />
             <CommonFilters filters={ProductPageFilters} otherClasses="w-full" placeholder="Sort by:" />
           </div>
-
+          
           <div className="rounded-md border border-slate-200 bg-slate-100/80 p-2 shadow-sm backdrop-blur-sm sm:gap-2 dark:border-zinc-800 dark:bg-zinc-950/90">
             <div className="flex flex-wrap items-center justify-between">
               <div className="flex h-20 w-50 flex-col items-center justify-center gap-2 rounded-md bg-white/90 p-4 shadow-sm dark:bg-zinc-900/90">

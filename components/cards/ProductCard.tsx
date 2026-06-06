@@ -41,7 +41,7 @@ const ProductCard = ({ data: { title, price, category, images} }: ProductCardPro
         </div>
 
         <button className="mt-auto w-full rounded-xl bg-black py-3 text-sm font-medium text-white transition hover:bg-gray-800">
-          Add to Cart
+          See More...
         </button>
       </div>
     </div>

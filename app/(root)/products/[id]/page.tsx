@@ -8,6 +8,8 @@ import { TbHexagon3D } from "react-icons/tb";
 import { GetProduct } from "@/lib/actions/product.action";
 import ProductImageGallery from "@/components/product/ProductImageGallery";
 import AddToCart from "@/components/cart/AddToCart";
+import Link from "next/link";
+import ROUTES from "@/constants/routes";
 
 interface ProductDetailsParams {
   params: { id: string };
@@ -122,9 +124,11 @@ const ProductDetails = async ({ params }: ProductDetailsParams) => {
               </p>
 
               {modelUrl && (
-                <Button className="">
-                  <TbHexagon3D size={22} /> 3D View
-                </Button>
+                <Link href={ROUTES.PRODUCT3D(id)}>
+                  <Button className="">
+                    <TbHexagon3D size={22} /> 3D View
+                  </Button>
+                </Link>
               )}
             </div>
           </div>
