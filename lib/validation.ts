@@ -1,3 +1,4 @@
+import { difficultyLevels, equipmentOptions, exerciseCategories, muscleGroups } from "@/constants/config";
 import z from "zod";
 
 export const SigninWithOAuthSchema = z.object({
@@ -189,4 +190,36 @@ export const createOrderFormSchema = z.object({
   postalCode: z.string().min(1, { message: "postal Code is required" }),
   country: z.string().min(1, { message: "country is Required" }),
   paymentMode: z.enum(["PREPAID", "COD"]),
+});
+
+export const createExerciseSchema = z.object({
+  name: z.string().min(3, "Exercise name must be at least 3 characters").max(100),
+
+  description: z.string().min(10, "Description is required").max(1000),
+
+  category: z.array(z.enum(exerciseCategories)),
+
+  muscleGroup: z.array(z.enum(muscleGroups)),
+
+  difficulty: z.array(z.enum(difficultyLevels)),
+
+  imageUrl: z.url("Invalid image URL").optional().or(z.literal("")),
+
+  videoUrl: z.url("Invalid video URL").optional().or(z.literal("")),
+
+  sets: z.number().min(1, "Sets must be at least 1").max(20),
+
+  reps: z.number().min(1, "Reps must be at least 1").max(100),
+
+  duration: z.number().min(1).max(180).optional(),
+
+  restTime: z.number().min(0).max(600),
+
+  equipment: z.array(z.enum(equipmentOptions)),
+
+  isPublic: z.boolean().default(true),
+
+  caloriesBurned: z.number().optional(),
+
+  instructions: z.array(z.string().min(5, "Instruction is too short")).min(1, "Add at least one instruction"),
 });

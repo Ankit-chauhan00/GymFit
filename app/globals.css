@@ -84,6 +84,9 @@
 @utility text-primary {
   @apply text-primary-500;
 }
+@utility bg-color {
+  @apply bg-white dark:bg-[#0F1117]
+}
 
 @utility light-border {
   @apply border-light-800 dark:border-dark-400;

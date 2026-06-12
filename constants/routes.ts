@@ -15,6 +15,8 @@ const ROUTES = {
     USER_EDIT:(id: string) => `/profile/${id}/edit`,
     USER_CART: (id: string)=> `/profile/${id}/cart`,
 
+    TRAINER_PANNEL: `/trainer-pannel`,
+
     ADMIN: `/admin`,
     ADMIN_DELET_USER:"/admin/delete-users"
 

@@ -1,4 +1,8 @@
+import { Client } from "@/types/global";
+import { ColumnDef } from "@tanstack/react-table";
+
 export const demoProducts = [
+
   {
     id: "prod_1",
     title: "Optimum Gold Whey Protein 2lb",
@@ -194,4 +198,170 @@ export const demoProducts = [
       },
     ],
   },
+];
+
+
+
+
+export const trainerData: Client[] = [
+  {
+    id: "1",
+    name: "Rahul Sharma",
+    age: 24,
+    plan: "Weight Loss",
+    status: "Active",
+  },
+  {
+    id: "2",
+    name: "Priya Verma",
+    age: 28,
+    plan: "Muscle Gain",
+    status: "Active",
+  },
+  {
+    id: "3",
+    name: "Amit Kumar",
+    age: 31,
+    plan: "Strength Training",
+    status: "Inactive",
+  },
+  {
+    id: "4",
+    name: "Neha Singh",
+    age: 26,
+    plan: "Fat Loss",
+    status: "Active",
+  },
+  {
+    id: "5",
+    name: "Rohit Yadav",
+    age: 22,
+    plan: "Body Recomposition",
+    status: "Active",
+  },
+  {
+    id: "6",
+    name: "Anjali Gupta",
+    age: 29,
+    plan: "Weight Loss",
+    status: "Active",
+  },
+  {
+    id: "7",
+    name: "Karan Malhotra",
+    age: 34,
+    plan: "Muscle Gain",
+    status: "Inactive",
+  },
+  {
+    id: "8",
+    name: "Sneha Kapoor",
+    age: 27,
+    plan: "Fat Loss",
+    status: "Active",
+  },
+  {
+    id: "9",
+    name: "Vikram Singh",
+    age: 30,
+    plan: "Strength Training",
+    status: "Active",
+  },
+  {
+    id: "10",
+    name: "Pooja Sharma",
+    age: 25,
+    plan: "Weight Loss",
+    status: "Inactive",
+  },
+  {
+    id: "11",
+    name: "Arjun Verma",
+    age: 23,
+    plan: "Muscle Gain",
+    status: "Active",
+  },
+  {
+    id: "12",
+    name: "Riya Jain",
+    age: 28,
+    plan: "Fat Loss",
+    status: "Active",
+  },
+  {
+    id: "13",
+    name: "Manish Kumar",
+    age: 35,
+    plan: "Strength Training",
+    status: "Inactive",
+  },
+  {
+    id: "14",
+    name: "Kritika Sharma",
+    age: 24,
+    plan: "Body Recomposition",
+    status: "Active",
+  },
+  {
+    id: "15",
+    name: "Sahil Mehta",
+    age: 32,
+    plan: "Muscle Gain",
+    status: "Active",
+  },
+  {
+    id: "16",
+    name: "Nisha Arora",
+    age: 26,
+    plan: "Weight Loss",
+    status: "Active",
+  },
+  {
+    id: "17",
+    name: "Deepak Yadav",
+    age: 29,
+    plan: "Fat Loss",
+    status: "Inactive",
+  },
+  {
+    id: "18",
+    name: "Ayesha Khan",
+    age: 27,
+    plan: "Body Recomposition",
+    status: "Active",
+  },
+  {
+    id: "19",
+    name: "Harsh Vardhan",
+    age: 33,
+    plan: "Strength Training",
+    status: "Active",
+  },
+  {
+    id: "20",
+    name: "Simran Kaur",
+    age: 25,
+    plan: "Weight Loss",
+    status: "Inactive",
+  },
+];
+
+export const trainerColumns: ColumnDef<Client>[] = [
+  {
+    accessorKey: "name",
+    header: "Client Name",
+  },
+  {
+    accessorKey: "age",
+    header: "Age",
+  },
+  {
+    accessorKey: "plan",
+    header: "Workout Plan",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
+  
 ];

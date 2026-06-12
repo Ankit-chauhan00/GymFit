@@ -201,7 +201,6 @@ const DeliveryForms = ({ defaultValues }: DeliveryFormProps) => {
             </Field>
             <Field>
               <FieldLabel className="font-iceland text-2xl opacity-70">Phone Number</FieldLabel>
-
               <Input
                 {...form.register("phoneNumber")}
                 placeholder="Enter your Number"

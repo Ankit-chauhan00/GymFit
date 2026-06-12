@@ -1,4 +1,4 @@
-import TrainerSideBar from '@/components/sideBars/TrainerSideBar'
+import TrainerSideBar from '@/components/Trainer_pannel/TrainerSideBar'
 import React, { ReactNode } from 'react'
 
 const TrainerPannelLayout = ({children}:{children: ReactNode}) => {
