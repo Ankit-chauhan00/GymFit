@@ -151,22 +151,21 @@ const DeliveryForms = ({ defaultValues }: DeliveryFormProps) => {
         order_id: razorpayOrder.id,
 
         handler: async function (response: RazorpayResponse) {
-          
-          router.replace(ROUTES.PRODUCT(productId));
+          try {
+            const verify = await api.payment.verifyRazorPayPayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            });
 
-          const verifyPayment = await api.payment.verifyRazorPayPayment({
-            razorpay_order_id: response.razorpay_order_id,
-
-            razorpay_payment_id: response.razorpay_payment_id,
-
-            razorpay_signature: response.razorpay_signature,
-          });
-
-
-          if (verifyPayment.success) {
-            toast.success("Payment Successful");
-          } else {
-            toast.error("Payment verification failed");
+            if (verify.success) {
+              toast.success("Payment Successful");
+              router.replace(ROUTES.PRODUCT(productId));
+            } else {
+              toast.error("Payment verification failed");
+            }
+          } catch (err) {
+            toast.error("Payment verification error :");
           }
         },
       };

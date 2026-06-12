@@ -5,13 +5,12 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect, usePathname, useRouter } from "next/navigation";
+import { redirect, usePathname} from "next/navigation";
 import React, { ReactNode, } from "react";
 import { toast } from "sonner";
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
   const { data: session } = useSession();
-  const router = useRouter();
 
   if (session?.user) {
     toast.error("User Alredy Logged in");

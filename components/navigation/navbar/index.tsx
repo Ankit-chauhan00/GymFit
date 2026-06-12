@@ -29,6 +29,7 @@ const NavBar = () => {
         <Link href="/memberships">Memberships</Link>
         <Link href="/trainers">Trainers</Link>
         <Link href="/products">Products</Link>
+        <Link href="/trainer-pannel">Trainer Pannel</Link>
     
       </div>
 
