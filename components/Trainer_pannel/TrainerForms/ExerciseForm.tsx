@@ -18,23 +18,28 @@ interface ExerciseFormProps {
 export default function ExerciseForm({ onSubmit }: ExerciseFormProps) {
   const form = useForm<CreateExerciseFormValues>({
     resolver: zodResolver(createExerciseSchema),
-    defaultValues: {
-      category: "",
-      muscleGroup: "",
-      difficulty: "",
-    },
   });
+  const emptyForm: CreateExerciseFormValues = {
+    name: "",
+    description: "",
+    category: "",
+    muscleGroup: "",
+    difficulty: "",
+    imageUrl: "",
+    videoUrl: "",
+    equipments: [],
+    sets: NaN,
+    reps: NaN,
+    restTime: NaN,
+    duration: NaN,
+  };
 
   const handleSubmit: SubmitHandler<CreateExerciseFormValues> = async (data) => {
     const result = await onSubmit(data);
 
     if (result.success) {
       toast.success("Exercise created successfully");
-      form.reset({
-        imageUrl: "",
-        videoUrl: "",
-      });
-      form.reset();
+      form.reset(emptyForm);
     } else {
       toast.error("Failed to create exercise");
     }
@@ -56,11 +61,11 @@ export default function ExerciseForm({ onSubmit }: ExerciseFormProps) {
               <div className="mt-5 flex gap-6">
                 <Button type="submit">Create Exercise</Button>
                 <Button
+                  type="button"
                   onClick={() => {
-                    form.reset({
-                      imageUrl: "",
-                      videoUrl: "",
-                    });
+                    form.reset(emptyForm);
+
+                    console.log(form.getValues());
                   }}
                 >
                   Reset Form
