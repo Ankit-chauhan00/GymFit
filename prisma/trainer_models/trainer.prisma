@@ -12,6 +12,7 @@ model Trainer {
 
   // Relation
   trainerClient  TrainerClient[]
+  exerciseCreated Exercise[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

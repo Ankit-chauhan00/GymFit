@@ -1,0 +1,68 @@
+enum ExerciseCategory {
+    STRENGTH
+    CARDIO
+    FLEXIBILITY
+    MOBILITY
+    BALANCE
+}
+
+enum MuscleGroup {
+    CHEST
+    BACK
+    SHOULDERS
+    BICEPS
+    TRICEPS
+    LEGS
+    GLUTES
+    CORE
+    FULL_BODY
+}
+
+enum Difficulty {
+    BEGINNER
+    INTERMEDIATE
+    ADVANCED
+}
+
+enum Equipment {
+    BODYWEIGHT
+    DUMBBELL
+    BARBELL
+    MACHINE
+    CABLE
+    KETTLEBELL
+    RESISTANCE_BAND
+    BENCH
+}
+
+
+model Exercise {
+    id              String      @id @default(cuid())
+
+    trainerId       String
+    trainer         Trainer     @relation(fields: [trainerId], references: [id])
+
+    name            String
+    description     String
+
+    category        ExerciseCategory
+    muscleGroup     MuscleGroup
+    difficulty      Difficulty
+
+    imageUrl        String?
+    videoUrl        String?
+
+    sets            Int?
+    reps            Int?
+    duration        Int?
+    restTime        Int?
+
+    equipments      Equipment[]
+
+    caloriesBurned  Int?
+
+    isPublic        Boolean     @default(true)
+
+    createdAt       DateTime    @default(now())
+    updatedAt       DateTime    @updatedAt
+}

@@ -13,9 +13,10 @@ type ActionOptions<T> = {
   schema?: ZodSchema<T>;
   authorize?: boolean;
   isAdmin?: boolean;
+  isTrainer?: boolean;
 };
 
-async function action<T>({ params, schema, authorize = false, isAdmin }: ActionOptions<T>) {
+async function action<T>({ params, schema, authorize = false, isAdmin, isTrainer }: ActionOptions<T>) {
   if (schema && params) {
     try {
       params = schema.parse(params);
@@ -43,6 +44,11 @@ async function action<T>({ params, schema, authorize = false, isAdmin }: ActionO
 
       if(session.user.role !== 'ADMIN')
         return new UnauthorizedError("Only Admin can Access");
+    }
+
+    if(isTrainer){
+      if(session.user.role !== 'TRAINER')
+        return new UnauthorizedError("Only Trainer can access");
     }
 
   }

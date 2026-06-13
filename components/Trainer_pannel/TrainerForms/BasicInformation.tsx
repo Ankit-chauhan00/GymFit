@@ -23,7 +23,7 @@ const BasicInformation = () => {
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="mt-4 flex flex-col gap-2">
+      <CardContent className="mt-2 flex flex-col gap-2">
         <div>
           <div className="grid gap-5 rounded-md border p-3 md:grid-cols-2">
             <Field>
@@ -115,6 +115,7 @@ const BasicInformation = () => {
                 )}
               />
             </Field>
+            
           </div>
           <div className="mt-3 rounded-md border p-3">
             <Field className="flex flex-col">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiUploadCloud } from "react-icons/fi";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,8 +18,16 @@ const ExerciseMedia = () => {
   const [imageUpload, setImageUpload] = useState(false);
   const [videoUpload, setVideoUpload] = useState(false);
 
-
   const form = useFormContext<CreateExerciseFormValues>();
+
+  const imageUrl = form.watch("imageUrl");
+  const videoUrl = form.watch("videoUrl");
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (!imageUrl) setImagePreview(null);
+    if (!videoUrl) setVideoPreview(null);
+  },[imageUrl, videoUrl]);
 
   const handleImageUplaod = async (file: File) => {
     try {
@@ -76,8 +84,6 @@ const ExerciseMedia = () => {
       toast.success("Vedio uploaded");
 
       return data.url;
-
-
     } catch (error) {
       console.log(error);
     } finally {
@@ -86,7 +92,7 @@ const ExerciseMedia = () => {
   };
 
   return (
-    <Card className="bg-color rounded-md">
+    <Card className="bg-color min-w-full rounded-md">
       <CardHeader>
         <CardTitle>
           <div className="flex flex-row items-center gap-2 md:gap-3">
@@ -159,7 +165,7 @@ const ExerciseMedia = () => {
               className="relative flex h-52 cursor-pointer items-center justify-center overflow-hidden rounded-md border-2 border-dashed transition-colors hover:border-red-500"
             >
               {videoPreview ? (
-                <video controls className="h-full w-full object-cover">
+                <video controls className="w-full object-cover">
                   <source src={videoPreview} />
                 </video>
               ) : (
@@ -178,7 +184,7 @@ const ExerciseMedia = () => {
               type="file"
               accept="video/mp4,video/webm,video/quicktime"
               className="hidden"
-              onChange={async(e) => {
+              onChange={async (e) => {
                 const file = e.target.files?.[0];
 
                 if (!file) return;
