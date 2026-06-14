@@ -1,7 +1,15 @@
+import { auth } from '@/auth'
 import TrainerSideBar from '@/components/Trainer_pannel/TrainerSideBar'
 import React, { ReactNode } from 'react'
 
-const TrainerPannelLayout = ({children}:{children: ReactNode}) => {
+const TrainerPannelLayout = async ({children}:{children: ReactNode}) => {
+  const session = await auth();
+  if(!session?.user.id){
+    return
+  }
+  if(session.user.role !== "TRAINER"){
+    return 
+  }
   return (
     <main className='min-h-screen w-full flex'>
       <TrainerSideBar/>

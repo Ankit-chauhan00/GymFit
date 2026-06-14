@@ -1,11 +1,12 @@
 "use server";
-import { ActionResponse } from "@/types/action";
+import { ActionResponse, getPaginatedExerciseParams } from "@/types/action";
 import handleError from "../handlers/error";
 import { CreateExerciseFormValues, ErrorResponse } from "@/types/global";
 import action from "../handlers/actions";
 import prisma from "../prisma";
-import { createExerciseSchema } from "../validation";
+import { createExerciseSchema, getPaginatedExerciseServerActionSchema } from "../validation";
 import logger from "../logger";
+import { Exercise, Prisma } from "@prisma/client";
 
 export async function createExercise(params: CreateExerciseFormValues): Promise<ActionResponse> {
   const validationRsult = await action({
@@ -41,8 +42,7 @@ export async function createExercise(params: CreateExerciseFormValues): Promise<
     });
 
     if (!trainer) throw new Error("Trainer not found");
-   
-    
+
     await prisma.exercise.create({
       data: {
         trainerId: trainer.id,
@@ -51,6 +51,111 @@ export async function createExercise(params: CreateExerciseFormValues): Promise<
     });
 
     return { success: true, message: "Exercise created successfully" };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function getExerciseByTrainer(
+  params: getPaginatedExerciseParams
+): Promise<ActionResponse<{ exercises: Exercise[]; isNext: boolean }>> {
+  const validationResult = await action({
+    params,
+    schema: getPaginatedExerciseServerActionSchema,
+    authorize: true,
+    isTrainer: true,
+  });
+
+  if (validationResult instanceof Error) return handleError(validationResult) as ErrorResponse;
+
+  const { page, pageSize, query, filter, muscleGroup, equipements, category } = validationResult.params!;
+  //search query
+
+  const userId = validationResult.session?.user.id;
+  console.log("USER ID:",userId)
+
+  const trainer = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    include: {
+      trainerProfile: {
+        select: {
+          id: true,
+        },
+      },
+    },
+  });
+  const trainerId = trainer?.trainerProfile?.id;
+  console.log("TRAINER ID:", trainerId);
+
+  if (!trainerId) {
+    return handleError(new Error("Trainer profile not found")) as ErrorResponse;
+  }
+
+  const where: Prisma.ExerciseWhereInput = {
+    trainerId,
+
+    ...(query && {
+      name: {
+        contains: query,
+        mode: "insensitive",
+      },
+    }),
+
+    ...(muscleGroup && {
+      muscleGroup,
+    }),
+
+    ...(equipements && {
+      equipements,
+    }),
+
+    ...(category && {
+      category,
+    }),
+  };
+
+  let orderBy = {};
+
+  switch (filter) {
+    case "oldest":
+      orderBy = {
+        createdAt: "asc",
+      };
+      break;
+
+    case "newest":
+    default:
+      orderBy = {
+        createdAt: "desc",
+      };
+  }
+
+  const skip = (page - 1) * pageSize;
+
+  try {
+    const [exercises, totalExercise] = await Promise.all([
+      prisma.exercise.findMany({
+        where,
+        orderBy,
+        skip,
+        take: pageSize,
+      }),
+      prisma.exercise.count({
+        where,
+      }),
+    ]);
+
+    const isNext = skip + exercises.length < totalExercise;
+
+    return {
+      success: true,
+      data: {
+        exercises,
+        isNext,
+      },
+    };
   } catch (error) {
     return handleError(error) as ErrorResponse;
   }

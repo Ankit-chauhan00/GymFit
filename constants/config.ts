@@ -41,38 +41,38 @@ export const PRODUCT_TYPE_VALUES = [
 export const CATEGORY_VALUES = ["SUPPLEMENTS", "EQUIPMENTS", "ACCESSORIES"] as const;
 
 export const equipmentOptions = [
-  "Bodyweight",
-  "Dumbbell",
-  "Barbell",
-  "Machine",
-  "Cable",
-  "Kettlebell",
-  "Resistance Band",
-  "Bench",
+  "BODYWEIGHT",
+  "DUMBBELL",
+  "BARBELL",
+  "MACHINE",
+  "CABLE",
+  "KETTLEBELL",
+  "RESISTANCE_BAND",
+  "BENCH",
 ] as const;
 
 export const exerciseCategories = [
-  "strength",
-  "cardio",
-  "flexibility",
-  "mobility",
-  "balance",
+  "STRENGTH",
+  "CARDIO",
+  "FLEXIBILITY",
+  "MOBILITY",
+  "BALANCE",
 ] as const;
 
 export const muscleGroups = [
-  "chest",
-  "back",
-  "shoulders",
-  "biceps",
-  "triceps",
-  "legs",
-  "glutes",
-  "core",
-  "full_body",
+  "CHEST",
+  "BACK",
+  "SHOULDERS",
+  "BICEPS",
+  "TRICEPS",
+  "LEGS",
+  "GLUTES",
+  "CORE",
+  "FULL_BODY",
 ] as const;
 
 export const difficultyLevels = [
-  "beginner",
-  "intermediate",
-  "advanced",
+  "BEGINNER",
+  "INTERMEDIATE",
+  "ADVANCED",
 ] as const;

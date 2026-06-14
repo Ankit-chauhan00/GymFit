@@ -44,3 +44,34 @@ export const ProductTypeFilters = [
   { name: "Resistance Band", value: "RESISTANCE_BAND" },
   { name: "Dumbbell", value: "DUMBBELL" },
 ];
+
+export const MuscleGroupFilters = [
+  { name: "Chest", value: "CHEST" },
+  { name: "Back", value: "BACK" },
+  { name: "Shoulders", value: "SHOULDERS" },
+  { name: "Biceps", value: "BICEPS" },
+  { name: "Triceps", value: "TRICEPS" },
+  { name: "Legs", value: "LEGS" },
+  { name: "Glutes", value: "GLUTES" },
+  { name: "Core", value: "CORE" },
+  { name: "Full Body", value: "FULL_BODY" },
+];
+
+export const ExerciseCategoryFilters = [
+  { name: "Strength", value: "STRENGTH" },
+  { name: "Cardio", value: "CARDIO" },
+  { name: "Flexibility", value: "FLEXIBILITY" },
+  { name: "Mobility", value: "MOBILITY" },
+  { name: "Balance", value: "BALANCE" },
+];
+
+export const EquipmentFilters = [
+  { name: "Bodyweight", value: "BODYWEIGHT" },
+  { name: "Dumbbell", value: "DUMBBELL" },
+  { name: "Barbell", value: "BARBELL" },
+  { name: "Machine", value: "MACHINE" },
+  { name: "Cable", value: "CABLE" },
+  { name: "Kettlebell", value: "KETTLEBELL" },
+  { name: "Resistance Band", value: "RESISTANCE_BAND" },
+  { name: "Bench", value: "BENCH" },
+];

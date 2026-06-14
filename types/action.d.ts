@@ -1,6 +1,6 @@
 import { OrderStatus, PaymentMode, Product, User } from "@prisma/client";
 import { PaginatedSearchParams } from "./global";
-import { createExerciseActionSchema } from "@/lib/validation";
+import { createExerciseActionSchema, getPaginatedExerciseServerActionSchema } from "@/lib/validation";
 
 interface SignInWithAuthParams {
   provider: "github" | "google";
@@ -141,4 +141,6 @@ interface CreateOrderParams {
   paymentMode: PaymentMode;
   
 }
+
+export type getPaginatedExerciseParams = z.infer<typeof getPaginatedExerciseServerActionSchema>
 

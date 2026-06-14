@@ -14,17 +14,17 @@ const menuItems = [
   {
     name: "My Clients",
     icon: Users,
-    href: `${TrainerBaseURL}/clients`,
+    href: `${TrainerBaseURL}/trainer-clients`,
   },
   {
-    name: "Add User",
+    name: "Add Client",
     icon: UserPlus,
-    href: `${TrainerBaseURL}/add-user`,
+    href: `${TrainerBaseURL}/add-client`,
   },
   {
-    name: "Remove User",
+    name: "Remove Client",
     icon: UserMinus,
-    href: `${TrainerBaseURL}/remove user`,
+    href: `${TrainerBaseURL}/remove-client`,
   },
   {
     name: "Create Exercise",
@@ -34,7 +34,7 @@ const menuItems = [
   {
     name: "Exercise Library",
     icon: Library,
-    href: `${TrainerBaseURL}/exercises`,
+    href: `${TrainerBaseURL}/trainer-exercises`,
   },
 ];
 

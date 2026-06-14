@@ -365,3 +365,116 @@ export const trainerColumns: ColumnDef<Client>[] = [
   },
   
 ];
+
+export const TrainerExercises = [
+  {
+    id: "1",
+    name: "Barbell Bench Press",
+    description: "Compound chest exercise for building upper body strength.",
+    muscleGroup: "CHEST",
+    equipment: "BARBELL",
+    difficulty: "INTERMEDIATE",
+    thumbnail:
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b",
+    createdAt: "2026-06-01",
+  },
+  {
+    id: "2",
+    name: "Back Squat",
+    description: "Targets quadriceps, glutes, and lower back.",
+    muscleGroup: "LEGS",
+    equipment: "BARBELL",
+    difficulty: "ADVANCED",
+    thumbnail:
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48",
+    createdAt: "2026-06-02",
+  },
+  {
+    id: "3",
+    name: "Pull Up",
+    description: "Bodyweight exercise for lats and upper back.",
+    muscleGroup: "BACK",
+    equipment: "BODYWEIGHT",
+    difficulty: "INTERMEDIATE",
+    thumbnail:
+      "https://images.unsplash.com/photo-1517836357463-d25dfeac3438",
+    createdAt: "2026-06-03",
+  },
+  {
+    id: "4",
+    name: "Dumbbell Shoulder Press",
+    description: "Builds shoulder strength and stability.",
+    muscleGroup: "SHOULDERS",
+    equipment: "DUMBBELL",
+    difficulty: "BEGINNER",
+    thumbnail:
+      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61",
+    createdAt: "2026-06-04",
+  },
+  {
+    id: "5",
+    name: "Romanian Deadlift",
+    description: "Strengthens hamstrings and glutes.",
+    muscleGroup: "GLUTES",
+    equipment: "BARBELL",
+    difficulty: "INTERMEDIATE",
+    thumbnail:
+      "https://images.unsplash.com/photo-1518611012118-696072aa579a",
+    createdAt: "2026-06-05",
+  },
+  {
+    id: "6",
+    name: "Tricep Pushdown",
+    description: "Isolation exercise for triceps development.",
+    muscleGroup: "TRICEPS",
+    equipment: "CABLE",
+    difficulty: "BEGINNER",
+    thumbnail:
+      "https://images.unsplash.com/photo-1517963879433-6ad2b056d712",
+    createdAt: "2026-06-06",
+  },
+  {
+    id: "7",
+    name: "Hammer Curl",
+    description: "Targets biceps and forearms.",
+    muscleGroup: "BICEPS",
+    equipment: "DUMBBELL",
+    difficulty: "BEGINNER",
+    thumbnail:
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e",
+    createdAt: "2026-06-07",
+  },
+  {
+    id: "8",
+    name: "Plank Hold",
+    description: "Improves core stability and endurance.",
+    muscleGroup: "CORE",
+    equipment: "BODYWEIGHT",
+    difficulty: "BEGINNER",
+    thumbnail:
+      "https://images.unsplash.com/photo-1518611012118-fb7c5c4a8f5b",
+    createdAt: "2026-06-08",
+  },
+  {
+    id: "9",
+    name: "Kettlebell Swing",
+    description: "Full body explosive movement.",
+    muscleGroup: "FULL_BODY",
+    equipment: "KETTLEBELL",
+    difficulty: "INTERMEDIATE",
+    thumbnail:
+      "https://images.unsplash.com/photo-1599058917212-d750089bc07e",
+    createdAt: "2026-06-09",
+  },
+  {
+    id: "10",
+    name: "Resistance Band Row",
+    description: "Builds back strength using resistance bands.",
+    muscleGroup: "BACK",
+    equipment: "RESISTANCE_BAND",
+    difficulty: "BEGINNER",
+    thumbnail:
+      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b",
+    createdAt: "2026-06-10",
+  },
+];

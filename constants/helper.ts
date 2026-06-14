@@ -6,3 +6,4 @@ export function searilizeProduct(product: Product){
         price: Number(product.price)
     }
 }
+
