@@ -1,10 +1,14 @@
 "use server";
-import { ActionResponse, getPaginatedExerciseParams } from "@/types/action";
+import { ActionResponse, deleteTrainerExerciseParams, getPaginatedExerciseParams } from "@/types/action";
 import handleError from "../handlers/error";
 import { CreateExerciseFormValues, ErrorResponse } from "@/types/global";
 import action from "../handlers/actions";
 import prisma from "../prisma";
-import { createExerciseSchema, getPaginatedExerciseServerActionSchema } from "../validation";
+import {
+  createExerciseSchema,
+  deleteTrainerExerciseSchema,
+  getPaginatedExerciseServerActionSchema,
+} from "../validation";
 import logger from "../logger";
 import { Exercise, Prisma } from "@prisma/client";
 
@@ -72,7 +76,7 @@ export async function getExerciseByTrainer(
   //search query
 
   const userId = validationResult.session?.user.id;
-  console.log("USER ID:",userId)
+  console.log("USER ID:", userId);
 
   const trainer = await prisma.user.findUnique({
     where: {
@@ -108,8 +112,8 @@ export async function getExerciseByTrainer(
     }),
 
     ...(equipments && {
-      equipments:{
-        has: equipments
+      equipments: {
+        has: equipments,
       },
     }),
 
@@ -157,6 +161,54 @@ export async function getExerciseByTrainer(
         exercises,
         isNext,
       },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function deleteTrainerExercise(params: deleteTrainerExerciseParams): Promise<ActionResponse> {
+  const validationResult = await action({
+    params,
+    schema: deleteTrainerExerciseSchema,
+    authorize: true,
+    isTrainer: true,
+  });
+
+  if (validationResult instanceof Error) return handleError(validationResult) as ErrorResponse;
+
+  const userId = validationResult.session?.user.id;
+  const { exerciseId } = validationResult.params;
+
+  try {
+    const trainer = await prisma.trainer.findUnique({
+      where: {
+        userId,
+      },
+      select:{
+        id: true
+      }
+    });
+
+    if (!trainer) {
+      throw new Error("Trainer not found");
+    }
+
+
+
+    const result =  await prisma.exercise.deleteMany({
+      where: {
+        id: exerciseId,
+        trainerId: trainer.id,
+      },
+    });
+
+    if(result.count === 0)
+      throw new Error("Exercise Not Found");
+
+    return {
+      success: true,
+      message: "Exercise Deleted Successfully",
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

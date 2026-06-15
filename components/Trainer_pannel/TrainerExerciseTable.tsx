@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -5,13 +6,25 @@ import Image from "next/image";
 import { Badge } from "../ui/badge";
 
 import { Exercise } from "@prisma/client";
-
+import { Button } from "../ui/button";
+import { MdDelete } from "react-icons/md";
+import { deleteTrainerExercise } from "@/lib/actions/exercise.action";
+import { useRouter } from "next/navigation";
 interface TrainerExerciseTableProps {
   data: Exercise[];
 }
 
 const TrainerExerciseTable = ({ data }: TrainerExerciseTableProps) => {
   const exercises = data;
+  const router = useRouter();
+
+  const handleExerciseDelete = async ( exerciseId : string)=>{
+    const result = await deleteTrainerExercise({exerciseId});
+
+    if(result.success){
+      router.refresh();
+    }
+  }
 
   return (
     <Table className="bg-color rouned-1.5 p-2">
@@ -43,14 +56,20 @@ const TrainerExerciseTable = ({ data }: TrainerExerciseTableProps) => {
             </TableCell>
 
             <TableCell>
-              <div className="flex flex-wrap  gap-2">
+              <div className="flex flex-wrap gap-2">
                 {exercise.equipments.map((equipment) => (
                   <Badge key={equipment}>{equipment}</Badge>
                 ))}
               </div>
             </TableCell>
 
-            <TableCell>{exercise.category}</TableCell>
+            <TableCell>
+              <Button 
+              onClick={()=>handleExerciseDelete(exercise.id)}
+               className="bg-red-600 text-white hover:text-green-400 hover:bg-red-400">
+                <MdDelete/>
+              </Button>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

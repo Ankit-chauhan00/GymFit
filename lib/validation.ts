@@ -229,3 +229,7 @@ export const getPaginatedExerciseServerActionSchema = PaginatedSearchParamsSchem
   muscleGroup: z.enum(muscleGroups).optional()
 })
 
+export const deleteTrainerExerciseSchema = z.object({
+  exerciseId: z.string().min(1,{message: "Exercsie Id is Required"}),
+})
+
