@@ -57,7 +57,7 @@ export default function TrainerSideBar() {
                     className={`flex w-full items-center justify-center gap-3 rounded-xl px-3 py-3 transition-all duration-300 md:justify-start md:px-4 ${
                       isActive
                         ? "border border-red-500/30 bg-red-500/15 text-red-500"
-                        : "text-black dark:text-gray-300 hover:bg-white/5 hover:text-white"
+                        : "text-black dark:text-gray-300 hover:bg-white/5 hover:text-red-600"
                     } `}
                   >
                     <Icon size={20} />

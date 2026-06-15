@@ -225,7 +225,7 @@ export const createExerciseSchema = z.object({
 
 export const getPaginatedExerciseServerActionSchema = PaginatedSearchParamsSchema.extend({
   category: z.enum(exerciseCategories).optional(),
-  equipements: z.enum(equipmentOptions).optional(),
+  equipments: z.enum(equipmentOptions).optional(),
   muscleGroup: z.enum(muscleGroups).optional()
 })
 

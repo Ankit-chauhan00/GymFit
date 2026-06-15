@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { formUrlQuerry, removeKeysfromUrlQuery } from "@/constants/url";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Input } from "../ui/input";
 
 interface Props {
@@ -20,14 +21,19 @@ const LoaclSearch = ({ route, imgSrc, placeholder, otherClasses, iconPosition = 
   const query = searchParams.get("query") || "";
   const router = useRouter();
   const [searchQuery, setsearchQuery] = useState(query);
+  const previousSearchRef = useRef(searchQuery);
 
- 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setsearchQuery(query);
+    if (query !== searchQuery) {
+      setsearchQuery(query);
+    }
   }, [query]);
 
   useEffect(() => {
+    if (previousSearchRef.current === searchQuery) return;
+
+    previousSearchRef.current = searchQuery;
+
     const delayDebounceFn = setTimeout(() => {
       if (searchQuery) {
         const newUrl = formUrlQuerry({

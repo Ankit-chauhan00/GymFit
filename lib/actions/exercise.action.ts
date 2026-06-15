@@ -68,7 +68,7 @@ export async function getExerciseByTrainer(
 
   if (validationResult instanceof Error) return handleError(validationResult) as ErrorResponse;
 
-  const { page, pageSize, query, filter, muscleGroup, equipements, category } = validationResult.params!;
+  const { page, pageSize, query, filter, muscleGroup, equipments, category } = validationResult.params!;
   //search query
 
   const userId = validationResult.session?.user.id;
@@ -107,8 +107,10 @@ export async function getExerciseByTrainer(
       muscleGroup,
     }),
 
-    ...(equipements && {
-      equipements,
+    ...(equipments && {
+      equipments:{
+        has: equipments
+      },
     }),
 
     ...(category && {

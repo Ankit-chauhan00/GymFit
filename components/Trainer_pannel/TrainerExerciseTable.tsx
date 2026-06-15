@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -11,19 +10,19 @@ interface TrainerExerciseTableProps {
   data: Exercise[];
 }
 
-const TrainerExerciseTable = ({data}:TrainerExerciseTableProps) => {
+const TrainerExerciseTable = ({ data }: TrainerExerciseTableProps) => {
   const exercises = data;
-
-  
 
   return (
     <Table className="bg-color rouned-1.5 p-2">
       <TableCaption>A List of your Recent Created Exercises</TableCaption>
       <TableHeader className="font-asap rounded-1.5 border p-2">
-        <TableHead className="max-w-[200px] text-xl">Exercise</TableHead>
-        <TableHead className="min-w-[200px] text-xl">Muscle Group</TableHead>
-        <TableHead className="min-w-[200px] text-xl">Equipements</TableHead>
-        <TableHead className="min-w-[200px] text-xl">Actions</TableHead>
+        <TableRow>
+          <TableHead className="max-w-[200px] text-xl">Exercise</TableHead>
+          <TableHead className="min-w-[200px] text-xl">Muscle Group</TableHead>
+          <TableHead className="min-w-[200px] text-xl">Equipments</TableHead>
+          <TableHead className="min-w-[200px] text-xl">Actions</TableHead>
+        </TableRow>
       </TableHeader>
 
       <TableBody>
@@ -43,7 +42,13 @@ const TrainerExerciseTable = ({data}:TrainerExerciseTableProps) => {
               <Badge className="bg-red-600 text-white">{exercise.muscleGroup}</Badge>
             </TableCell>
 
-            <TableCell>{exercise.equipments}</TableCell>
+            <TableCell>
+              <div className="flex flex-wrap  gap-2">
+                {exercise.equipments.map((equipment) => (
+                  <Badge key={equipment}>{equipment}</Badge>
+                ))}
+              </div>
+            </TableCell>
 
             <TableCell>{exercise.category}</TableCell>
           </TableRow>

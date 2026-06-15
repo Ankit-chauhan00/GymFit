@@ -1,3 +1,4 @@
+import ClearFilters from "@/components/filters/ClearFilters";
 import CommonFilters from "@/components/filters/CommonFilters";
 import Pagination from "@/components/Pagination";
 import LoaclSearch from "@/components/search/LoaclSearch";
@@ -15,14 +16,14 @@ interface SearchParams {
 const TrainerExercisePage = async ({ searchParams }: SearchParams) => {
   const params = await searchParams;
 
-  const { page, pageSize, query, filter, exerciseCategory, equipements, muscleGroup } = params;
+  const { page, pageSize, query, filter, exerciseCategory, equipments, muscleGroup } = params;
 
   const { data } =  await getExerciseByTrainer({
   page: Number(page) || 1,
   pageSize: Number(pageSize) || 8,
   filter,
   category: exerciseCategory,
-  equipements,
+  equipments,
   muscleGroup,
   query,
 });
@@ -56,7 +57,7 @@ const TrainerExercisePage = async ({ searchParams }: SearchParams) => {
               otherClasses="max-w-1/2 bg-color "
             />
 
-            <div className="font-asap flex flex-wrap gap-2 lg:w-1/2">
+            <div className="font-asap flex flex-wrap gap-2 items-center lg:w-1/2">
               <CommonFilters
                 filters={ExerciseCategoryFilters}
                 otherClasses="w-full"
@@ -77,8 +78,10 @@ const TrainerExercisePage = async ({ searchParams }: SearchParams) => {
                 otherClasses="w-full"
                 containerClasses="bg-color rounded-md px-3 py-2"
                 placeholder="Equipements"
-                filterKey="equipements"
+                filterKey="equipments"
               />
+
+              <ClearFilters otherClasses="bg-red-600 rouned-md"/>
             </div>
           </div>
         </div>
