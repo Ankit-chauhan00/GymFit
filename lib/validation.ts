@@ -233,3 +233,8 @@ export const deleteTrainerExerciseSchema = z.object({
   exerciseId: z.string().min(1,{message: "Exercsie Id is Required"}),
 })
 
+export const getUserForTrainerSchema = PaginatedSearchParamsSchema;
+
+export const createTrianerClientSchema = z.object({
+  clientId: z.string().min(1,{message: "User Id is Required"}),
+})

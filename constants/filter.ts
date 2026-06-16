@@ -75,3 +75,8 @@ export const EquipmentFilters = [
   { name: "Resistance Band", value: "RESISTANCE_BAND" },
   { name: "Bench", value: "BENCH" },
 ];
+
+export const DefaultFilters = [
+  { name: "Latest", value: "latest" },
+  { name: "Oldest", value: "oldest" },
+];

@@ -1,13 +1,22 @@
 "use server";
-import { ActionResponse, deleteTrainerExerciseParams, getPaginatedExerciseParams } from "@/types/action";
+import {
+  ActionResponse,
+  createTrainerClientParams,
+  deleteTrainerExerciseParams,
+  getPaginatedExerciseParams,
+  getUsersForTrainerParams,
+  SafeTrainerUser,
+} from "@/types/action";
 import handleError from "../handlers/error";
 import { CreateExerciseFormValues, ErrorResponse } from "@/types/global";
 import action from "../handlers/actions";
 import prisma from "../prisma";
 import {
   createExerciseSchema,
+  createTrianerClientSchema,
   deleteTrainerExerciseSchema,
   getPaginatedExerciseServerActionSchema,
+  getUserForTrainerSchema,
 } from "../validation";
 import logger from "../logger";
 import { Exercise, Prisma } from "@prisma/client";
@@ -76,7 +85,6 @@ export async function getExerciseByTrainer(
   //search query
 
   const userId = validationResult.session?.user.id;
-  console.log("USER ID:", userId);
 
   const trainer = await prisma.user.findUnique({
     where: {
@@ -185,30 +193,165 @@ export async function deleteTrainerExercise(params: deleteTrainerExerciseParams)
       where: {
         userId,
       },
-      select:{
-        id: true
-      }
+      select: {
+        id: true,
+      },
     });
 
     if (!trainer) {
       throw new Error("Trainer not found");
     }
 
-
-
-    const result =  await prisma.exercise.deleteMany({
+    const result = await prisma.exercise.deleteMany({
       where: {
         id: exerciseId,
         trainerId: trainer.id,
       },
     });
 
-    if(result.count === 0)
-      throw new Error("Exercise Not Found");
+    if (result.count === 0) throw new Error("Exercise Not Found");
 
     return {
       success: true,
       message: "Exercise Deleted Successfully",
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function getUserForTrainer(
+  params: getUsersForTrainerParams
+): Promise<ActionResponse<{ users: SafeTrainerUser[]; isNext: boolean }>> {
+  const validationResult = await action({
+    params,
+    schema: getUserForTrainerSchema,
+    authorize: true,
+    isTrainer: true,
+  });
+
+  if (validationResult instanceof Error) return handleError(validationResult) as ErrorResponse;
+
+  const { query, page, pageSize, filter } = validationResult.params;
+
+  try {
+    const where = {
+      role: "USER",
+
+      ...(query && {
+        OR: [
+          {
+            name: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            email: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        ],
+      }),
+    };
+
+    let orderBy = {};
+
+    switch (filter) {
+      case "oldest":
+        orderBy = {
+          createdAt: "asc",
+        };
+        break;
+      case "newest":
+      default:
+        orderBy = {
+          createdAt: "desc",
+        };
+    }
+
+    const skip = (page - 1) * pageSize;
+
+    const [users, totalUsers] = await Promise.all([
+      prisma.user.findMany({
+        where,
+        orderBy,
+        skip,
+        take: pageSize,
+        select:{
+          id: true,
+          name: true,
+          username: true,
+          email: true,
+          createdAt: true
+        }
+      }),
+      prisma.user.count({
+        where,
+      }),
+    ]);
+
+    const isNext = skip + users.length < totalUsers;
+
+    return {
+      success: true,
+      data: {
+        users,
+        isNext,
+      },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function createTrainerClient(params: createTrainerClientParams): Promise<ActionResponse> {
+  const validationResult = await action({
+    params,
+    schema: createTrianerClientSchema,
+    authorize: true,
+    isTrainer: true,
+  });
+
+  if (validationResult instanceof Error) return handleError(validationResult) as ErrorResponse;
+
+  const trainerUserId = validationResult.session?.user.id;
+  const { clientId } = validationResult.params!;
+
+  try {
+    const trainer = await prisma.trainer.findUnique({
+      where: {
+        userId: trainerUserId,
+      },
+    });
+
+    if (!trainer) throw new Error("Trainer Not Found");
+
+    const expireAt = new Date(Date.now() + 31 * 24 * 60 * 60 * 1000);
+
+    const existingClient = await prisma.trainerClient.findFirst({
+      where: {
+        trainerId: trainer.id,
+        userId: clientId,
+      },
+    });
+
+    if (existingClient) {
+      throw new Error("Client already added");
+    }
+    await prisma.trainerClient.create({
+      data: {
+        trainerId: trainer.id,
+        userId: clientId,
+        ptStatus: "ACTIVE",
+        expireAt,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Trainer Created Successfully",
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

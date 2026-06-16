@@ -25,7 +25,7 @@ const UserAvatar = ({id, name, imageUrl,fallbackClassName, classname = 'h-9 w-9'
                 alt={name}
                 className='w-full h-full object-cover rounded-full'
                 fill
-                quality={100}
+                quality={70}
                 />
             ):(
                 <AvatarFallback className={cn('primary-gradient font-space-grotesk font-bold tracking-wider text-white', fallbackClassName)}>

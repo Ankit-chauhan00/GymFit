@@ -1,6 +1,6 @@
 "use client";
 import ExerciseForm from "@/components/Trainer_pannel/TrainerForms/ExerciseForm";
-import { createExercise } from "@/lib/actions/exercise.action";
+import { createExercise } from "@/lib/actions/trainer.action";
 import React from "react";
 import { FaDumbbell } from "react-icons/fa";
 

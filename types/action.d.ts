@@ -1,6 +1,12 @@
 import { OrderStatus, PaymentMode, Product, User } from "@prisma/client";
 import { PaginatedSearchParams } from "./global";
-import { createExerciseActionSchema, deleteTrainerExerciseSchema, getPaginatedExerciseServerActionSchema } from "@/lib/validation";
+import {
+  createExerciseActionSchema,
+  createTrianerClientSchema,
+  deleteTrainerExerciseSchema,
+  getPaginatedExerciseServerActionSchema,
+  getUserForTrainerSchema,
+} from "@/lib/validation";
 
 interface SignInWithAuthParams {
   provider: "github" | "google";
@@ -139,9 +145,14 @@ interface CreateOrderParams {
 
   orderStatus?: OrderStatus;
   paymentMode: PaymentMode;
-  
 }
 
-export type getPaginatedExerciseParams = z.infer<typeof getPaginatedExerciseServerActionSchema>
+export type getPaginatedExerciseParams = z.infer<typeof getPaginatedExerciseServerActionSchema>;
 
-export type deleteTrainerExerciseParams = z.infer<typeof deleteTrainerExerciseSchema>
+export type deleteTrainerExerciseParams = z.infer<typeof deleteTrainerExerciseSchema>;
+
+export type getUsersForTrainerParams = z.infer<typeof getUserForTrainerSchema>;
+
+export type createTrainerClientParams = z.infer<typeof createTrianerClientSchema>;
+
+type SafeTrainerUser = Pick<User, "name" | "username" | "email" | "createdAt" | "id">;

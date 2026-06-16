@@ -24,6 +24,7 @@ const LoaclSearch = ({ route, imgSrc, placeholder, otherClasses, iconPosition = 
   const previousSearchRef = useRef(searchQuery);
 
   useEffect(() => {
+    if (query === searchQuery) return;
     if (query !== searchQuery) {
       setsearchQuery(query);
     }
@@ -68,7 +69,17 @@ const LoaclSearch = ({ route, imgSrc, placeholder, otherClasses, iconPosition = 
         placeholder={placeholder}
         value={searchQuery}
         onChange={(e) => {
-          setsearchQuery(e.target.value);
+          const value = e.target.value;
+          setsearchQuery(value);
+
+          if (!value.trim()) {
+            const newUrl = removeKeysfromUrlQuery({
+              params: searchParams.toString(),
+              keysToRemove: ["query"],
+            });
+
+            router.replace(newUrl, { scroll: false });
+          }
         }}
         className="paragraph-regular no-focus placeholder text-dark400_light700 border-none shadow-none outline-none"
       />

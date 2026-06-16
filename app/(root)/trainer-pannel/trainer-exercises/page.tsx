@@ -4,9 +4,9 @@ import Pagination from "@/components/Pagination";
 import LoaclSearch from "@/components/search/LoaclSearch";
 import TrainerExerciseTable from "@/components/Trainer_pannel/TrainerExerciseTable";
 import { Button } from "@/components/ui/button";
-import {EquipmentFilters, ExerciseCategoryFilters, MuscleGroupFilters } from "@/constants/filter";
+import { EquipmentFilters, ExerciseCategoryFilters, MuscleGroupFilters } from "@/constants/filter";
 import ROUTES from "@/constants/routes";
-import {  getExerciseByTrainer } from "@/lib/actions/exercise.action";
+import { getExerciseByTrainer } from "@/lib/actions/trainer.action";
 import Link from "next/link";
 
 interface SearchParams {
@@ -18,16 +18,15 @@ const TrainerExercisePage = async ({ searchParams }: SearchParams) => {
 
   const { page, pageSize, query, filter, exerciseCategory, equipments, muscleGroup } = params;
 
-  const { data } =  await getExerciseByTrainer({
-  page: Number(page) || 1,
-  pageSize: Number(pageSize) || 8,
-  filter,
-  category: exerciseCategory,
-  equipments,
-  muscleGroup,
-  query,
-});
-
+  const { data,  } = await getExerciseByTrainer({
+    page: Number(page) || 1,
+    pageSize: Number(pageSize) || 8,
+    filter,
+    category: exerciseCategory,
+    equipments,
+    muscleGroup,
+    query,
+  });
 
   const exercises = data?.exercises ?? [];
   const isNext = data?.isNext ?? false;
@@ -42,7 +41,7 @@ const TrainerExercisePage = async ({ searchParams }: SearchParams) => {
             <p className="font-asap text-sm opacity-70 md:text-xl">Create, manage and organise your exercise library</p>
           </div>
 
-          <Link href={`${ROUTES.TRAINER_PANNEL}/trainer-exercises`}>
+          <Link href={`${ROUTES.TRAINER_PANNEL}/create-exercise`}>
             <Button className="font-asap rounded-sm bg-red-600 px-2 py-3 font-bold text-white">+ Add exercise</Button>
           </Link>
         </header>
@@ -57,7 +56,7 @@ const TrainerExercisePage = async ({ searchParams }: SearchParams) => {
               otherClasses="max-w-1/2 bg-color "
             />
 
-            <div className="font-asap flex flex-wrap gap-2 items-center lg:w-1/2">
+            <div className="font-asap flex flex-wrap items-center gap-2 lg:w-1/2">
               <CommonFilters
                 filters={ExerciseCategoryFilters}
                 otherClasses="w-full"
@@ -81,7 +80,7 @@ const TrainerExercisePage = async ({ searchParams }: SearchParams) => {
                 filterKey="equipments"
               />
 
-              <ClearFilters otherClasses="bg-red-600 rouned-md"/>
+              <ClearFilters otherClasses="bg-red-600 rouned-md" />
             </div>
           </div>
         </div>

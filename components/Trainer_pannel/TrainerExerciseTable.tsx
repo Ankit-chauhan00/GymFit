@@ -8,7 +8,7 @@ import { Badge } from "../ui/badge";
 import { Exercise } from "@prisma/client";
 import { Button } from "../ui/button";
 import { MdDelete } from "react-icons/md";
-import { deleteTrainerExercise } from "@/lib/actions/exercise.action";
+import { deleteTrainerExercise } from "@/lib/actions/trainer.action";
 import { useRouter } from "next/navigation";
 interface TrainerExerciseTableProps {
   data: Exercise[];
@@ -18,13 +18,13 @@ const TrainerExerciseTable = ({ data }: TrainerExerciseTableProps) => {
   const exercises = data;
   const router = useRouter();
 
-  const handleExerciseDelete = async ( exerciseId : string)=>{
-    const result = await deleteTrainerExercise({exerciseId});
+  const handleExerciseDelete = async (exerciseId: string) => {
+    const result = await deleteTrainerExercise({ exerciseId });
 
-    if(result.success){
+    if (result.success) {
       router.refresh();
     }
-  }
+  };
 
   return (
     <Table className="bg-color rouned-1.5 p-2">
@@ -64,10 +64,11 @@ const TrainerExerciseTable = ({ data }: TrainerExerciseTableProps) => {
             </TableCell>
 
             <TableCell>
-              <Button 
-              onClick={()=>handleExerciseDelete(exercise.id)}
-               className="bg-red-600 text-white hover:text-green-400 hover:bg-red-400">
-                <MdDelete/>
+              <Button
+                onClick={() => handleExerciseDelete(exercise.id)}
+                className="bg-red-600 text-white hover:bg-red-400 hover:text-green-400"
+              >
+                <MdDelete />
               </Button>
             </TableCell>
           </TableRow>
