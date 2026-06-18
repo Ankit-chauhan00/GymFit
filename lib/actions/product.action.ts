@@ -21,7 +21,6 @@ import prisma from "../prisma";
 import { searilizeProduct } from "@/constants/helper";
 import { Category, Prisma, ProductType } from "@prisma/client";
 import { redis } from "../redis";
-import { success } from "zod";
 
 interface ProductionCreationServerAction extends CreateProductParams {
   images?: string[];
