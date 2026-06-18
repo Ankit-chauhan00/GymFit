@@ -124,7 +124,9 @@ export async function GetProduct(params: GetProductById): Promise<ActionResponse
     const cacheKey = `product:${productId}`;
 
     // CHECK REDIS CACHE
+    console.time("REDIS_GET");
     const cachedProduct = await redis.get(cacheKey);
+    console.timeEnd("REDIS_GET");
 
     if (cachedProduct) {
       console.log("CACHE HIT");
@@ -137,6 +139,7 @@ export async function GetProduct(params: GetProductById): Promise<ActionResponse
 
     console.log("CACHE MISS");
 
+    console.time("DB");
     const product = await prisma.product.findUnique({
       where: {
         id: productId,
@@ -150,16 +153,23 @@ export async function GetProduct(params: GetProductById): Promise<ActionResponse
       },
     });
 
+    console.timeEnd("DB");
+
     if (!product) throw new Error("Product Not Found");
+
+    console.time("FLATTEN");
 
     const flatternProduct = {
       ...product,
       images: product?.images.map((img) => img.imageUrl),
     };
+    console.timeEnd("FLATTEN");
 
     // STORE IN REDIS
+    console.time("REDIS_SET");
     await redis.set(cacheKey, JSON.stringify(flatternProduct), "EX", 60 * 60);
-
+    console.timeEnd("REDIS_SET");
+    
     return { success: true, data: flatternProduct };
   } catch (error) {
     return handleError(error) as ErrorResponse;

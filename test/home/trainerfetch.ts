@@ -4,17 +4,16 @@ import { check, sleep } from "k6";
 
 export const options = {
   stages: [
-    { duration: "30s", target: 200 },
+    { duration: "30s", target: 1000 },
    
   ],
 };
 
 export default function () {
 
-  const page = Math.floor(Math.random() * 10) + 1;
 
   const res = http.get(
-    `http://localhost:3000/trainers?page=${page}`
+    `https://gym-project-prra.vercel.app/products`
   );
 
   check(res, {
