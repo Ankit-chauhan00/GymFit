@@ -22,11 +22,6 @@ const menuItems = [
     href: `${TrainerBaseURL}/add-client`,
   },
   {
-    name: "Remove Client",
-    icon: UserMinus,
-    href: `${TrainerBaseURL}/remove-client`,
-  },
-  {
     name: "Create Exercise",
     icon: Dumbbell,
     href: `${TrainerBaseURL}/create-exercise`,

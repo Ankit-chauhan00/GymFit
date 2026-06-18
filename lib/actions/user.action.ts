@@ -2,7 +2,7 @@
 
 import { ActionResponse, GetCartItemsParams, GetTrainerParams, ProductWithImages } from "@/types/action";
 import { ErrorResponse, PaginatedSearchParams, TrainerWithUser } from "@/types/global";
-import { Product, Trainer, User } from "@prisma/client";
+import {  Trainer, User } from "@prisma/client";
 import action from "../handlers/actions";
 import { GetCartItemsSchema, GetTrainerByIdSchema, PaginatedSearchParamsSchema } from "../validation";
 import handleError from "../handlers/error";

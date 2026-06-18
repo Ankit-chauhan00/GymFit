@@ -5,10 +5,11 @@ import {
   deleteTrainerExerciseParams,
   getPaginatedExerciseParams,
   getUsersForTrainerParams,
+  removeTrainerClientParams,
   SafeTrainerUser,
 } from "@/types/action";
 import handleError from "../handlers/error";
-import { CreateExerciseFormValues, ErrorResponse } from "@/types/global";
+import { CreateExerciseFormValues, ErrorResponse, PaginatedSearchParams } from "@/types/global";
 import action from "../handlers/actions";
 import prisma from "../prisma";
 import {
@@ -17,6 +18,8 @@ import {
   deleteTrainerExerciseSchema,
   getPaginatedExerciseServerActionSchema,
   getUserForTrainerSchema,
+  PaginatedSearchParamsSchema,
+  removeTrainerClientSchema,
 } from "../validation";
 import logger from "../logger";
 import { Exercise, Prisma } from "@prisma/client";
@@ -279,13 +282,13 @@ export async function getUserForTrainer(
         orderBy,
         skip,
         take: pageSize,
-        select:{
+        select: {
           id: true,
           name: true,
           username: true,
           email: true,
-          createdAt: true
-        }
+          createdAt: true,
+        },
       }),
       prisma.user.count({
         where,
@@ -352,6 +355,170 @@ export async function createTrainerClient(params: createTrainerClientParams): Pr
     return {
       success: true,
       message: "Trainer Created Successfully",
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function getTrainerClients(
+  params: PaginatedSearchParams
+): Promise<ActionResponse<{ clients: SafeTrainerUser[]; isNext: boolean }>> {
+  const validationResult = await action({
+    params,
+    schema: PaginatedSearchParamsSchema,
+    authorize: true,
+    isTrainer: true,
+  });
+
+  if (validationResult instanceof Error) return handleError(validationResult) as ErrorResponse;
+
+  const { page = 1, pageSize = 10, query, filter } = validationResult.params!;
+  const trainerUserId = validationResult.session?.user.id;
+
+  try {
+    const trainer = await prisma.trainer.findUnique({
+      where: {
+        userId: trainerUserId,
+      },
+    });
+
+    if (!trainer) throw new Error("Trainer not Found");
+
+    const where: Prisma.TrainerClientWhereInput = {
+      trainerId: trainer.id,
+
+      ...(query && {
+        user: {
+          OR: [
+            {
+              name: {
+                contains: query,
+                mode: "insensitive",
+              },
+            },
+            {
+              email: {
+                contains: query,
+                mode: "insensitive",
+              },
+            },
+            {
+              username: {
+                contains: query,
+                mode: "insensitive",
+              },
+            },
+          ],
+        },
+      }),
+    };
+
+    let orderBy: Prisma.TrainerClientOrderByWithRelationInput = {};
+
+    switch (filter) {
+      case "oldest":
+        orderBy = {
+          user: {
+            createdAt: "asc",
+          },
+        };
+        break;
+
+      case "newest":
+      default:
+        orderBy = {
+          user: {
+            createdAt: "desc",
+          },
+        };
+    }
+
+    const skip = (page - 1) * pageSize;
+
+    const [clients, totalClients] = await Promise.all([
+      prisma.trainerClient.findMany({
+        where,
+        orderBy,
+        skip,
+        take: pageSize,
+        select: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              username: true,
+              email: true,
+              createdAt: true,
+            },
+          },
+        },
+      }),
+
+      prisma.trainerClient.count({
+        where,
+      }),
+    ]);
+
+    const formattedClients = clients.map((client) => client.user);
+    const isNext = skip + clients.length < totalClients;
+
+    return {
+      success: true,
+      data: {
+        clients: formattedClients,
+        isNext,
+      },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function removeTrainerClient(params: removeTrainerClientParams): Promise<ActionResponse> {
+  
+  const validationResult = await action({
+    params,
+    schema: removeTrainerClientSchema,
+    authorize: true,
+    isTrainer: true,
+  });
+
+  if (validationResult instanceof Error) return handleError(validationResult) as ErrorResponse;
+
+  const trainerUserId = validationResult.session?.user.id;
+  const { clientId } = validationResult.params!;
+
+  try {
+    
+    const trainer = await prisma.trainer.findUnique({
+      where: {
+        userId: trainerUserId,
+      },
+    });
+
+    if (!trainer) throw new Error("Trainer Not Found");
+
+    try {
+      await prisma.trainerClient.delete({
+        where: {
+          trainerId_userId: {
+            trainerId: trainer.id,
+            userId: clientId,
+          },
+        },
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
+        throw new Error("Client not assigned to this trainer");
+      }
+
+      throw error;
+    }
+
+    return {
+      success: true,
+      message: "Client removed Successfully",
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

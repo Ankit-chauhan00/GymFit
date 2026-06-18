@@ -46,7 +46,7 @@ const AddClient = async ({ searchParams }: SearchParams) => {
             </div>
             
             <div className="mt-10 w-full flex-1">
-              <UserTable users={users} />
+              <UserTable users={users} action="add" />
               <Pagination page={Number(page) || 1} isNext={isNext} containerClasses="mt-3" />
             </div>
           </div>

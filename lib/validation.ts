@@ -238,3 +238,7 @@ export const getUserForTrainerSchema = PaginatedSearchParamsSchema;
 export const createTrianerClientSchema = z.object({
   clientId: z.string().min(1,{message: "User Id is Required"}),
 })
+
+export const removeTrainerClientSchema = z.object({
+  clientId: z.string().min(1,{message: "User Id is Required"}),
+})

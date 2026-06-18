@@ -2,14 +2,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { format } from "date-fns";
 import AddClient from "./AddClient";
 import { SafeTrainerUser } from "@/types/action";
+import RemoveClient from "./RemoveClient";
 
 interface TrainerAvailableUser {
   users: SafeTrainerUser[];
+  action?: "add" | "remove";
 }
 
-const UserTable = ({ users }: TrainerAvailableUser) => {
-
-
+const UserTable = ({ users, action }: TrainerAvailableUser) => {
+  
   return (
     <>
       <Table className="overflow-hidden rounded-xl">
@@ -42,7 +43,9 @@ const UserTable = ({ users }: TrainerAvailableUser) => {
               <TableCell>{format(new Date(user.createdAt), "dd MMM yyyy")}</TableCell>
 
               <TableCell className="text-right">
-                <AddClient userId={user.id} />
+                {action === "add" ? 
+                <AddClient userId={user.id} /> :
+                 <RemoveClient userId={user.id} />}
               </TableCell>
             </TableRow>
           ))}

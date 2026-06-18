@@ -6,6 +6,7 @@ import {
   deleteTrainerExerciseSchema,
   getPaginatedExerciseServerActionSchema,
   getUserForTrainerSchema,
+  removeTrainerClientSchema,
 } from "@/lib/validation";
 
 interface SignInWithAuthParams {
@@ -154,5 +155,8 @@ export type deleteTrainerExerciseParams = z.infer<typeof deleteTrainerExerciseSc
 export type getUsersForTrainerParams = z.infer<typeof getUserForTrainerSchema>;
 
 export type createTrainerClientParams = z.infer<typeof createTrianerClientSchema>;
+
+export type removeTrainerClientParams= z.infer<typeof removeTrainerClientSchema>;
+
 
 type SafeTrainerUser = Pick<User, "name" | "username" | "email" | "createdAt" | "id">;
