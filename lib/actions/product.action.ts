@@ -169,7 +169,9 @@ export async function GetProduct(params: GetProductById): Promise<ActionResponse
     console.time("REDIS_SET");
     await redis.set(cacheKey, JSON.stringify(flatternProduct), "EX", 60 * 60);
     console.timeEnd("REDIS_SET");
-    
+
+    console.timeEnd("TOTAL");
+
     return { success: true, data: flatternProduct };
   } catch (error) {
     return handleError(error) as ErrorResponse;
