@@ -201,7 +201,9 @@ export async function getFilteredProducts(
     filter || "newest",
   ].join(":");
 
+  console.time("REDIS_GET");
   const cachedProducts = await redis.get(cacheKey);
+  console.timeEnd("REDIS_GET");
 
   if (cachedProducts) {
     console.log("CACHE PRODUCT HIT");
@@ -261,7 +263,7 @@ export async function getFilteredProducts(
 
     // PAGINATION
     const skip = (page - 1) * pageSize;
-
+    console.time("DB");
     const products = await prisma.product.findMany({
       select: {
         id: true,
@@ -289,6 +291,8 @@ export async function getFilteredProducts(
       take: pageSize + 1,
     });
 
+    console.timeEnd("DB");
+
     // NEXT PAGE CHECK
     const isNext = products.length > pageSize;
 
@@ -303,9 +307,11 @@ export async function getFilteredProducts(
         isNext,
       },
     };
-
+    console.time("REDIS_SET");
     await redis.set(cacheKey, JSON.stringify(response), "EX", 180);
+    console.time("REDIS_SET");
 
+    console.timeEnd("TOTAL");
     return response;
   } catch (error) {
     return handleError(error) as ErrorResponse;
