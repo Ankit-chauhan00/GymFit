@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import ProductCard from "@/components/cards/ProductCard";
 import DataRenderer from "@/components/DataRenderer";
 import ClearFilters from "@/components/filters/ClearFilters";
@@ -13,12 +14,17 @@ import { getFilteredProducts } from "@/lib/actions/product.action";
 import { ProductWithSingleImageProps } from "@/types/global";
 
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 interface SearchParams {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
 const ProductSections = async ({ searchParams }: SearchParams) => {
+  const session = await auth();
+  if(!session?.user){
+    redirect("/sign-in")
+  }
   const params = await searchParams;
 
   const { page, pageSize, query, filter, category } = await params;

@@ -181,11 +181,15 @@ export async function GetProduct(params: GetProductById): Promise<ActionResponse
 export async function getFilteredProducts(
   params: GetFilteredProducts
 ): Promise<ActionResponse<{ products: ProductWithSingleImage[]; isNext: boolean }>> {
+  console.time("TOTAL");
+  console.log("REQUEST STARTED");
   const validationResult = await action({
     params,
     schema: GetFilteredProductsSchema,
     authorize: true,
   });
+
+  console.log("AUTH PASSED");
 
   if (validationResult instanceof Error) return handleError(validationResult) as ErrorResponse;
 
@@ -309,7 +313,7 @@ export async function getFilteredProducts(
     };
     console.time("REDIS_SET");
     await redis.set(cacheKey, JSON.stringify(response), "EX", 180);
-    console.time("REDIS_SET");
+    console.timeEnd("REDIS_SET");
 
     console.timeEnd("TOTAL");
     return response;
