@@ -7,6 +7,7 @@ import { auth } from "@/auth";
 import { Toaster } from "sonner";
 import { SessionProvider } from "next-auth/react";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -58,6 +59,7 @@ export default async function RootLayout({
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
             {children}
+            <SpeedInsights/>
             <Toaster />
           </ThemeProvider>
         </SessionProvider>

@@ -183,6 +183,7 @@ export async function getFilteredProducts(
 ): Promise<ActionResponse<{ products: ProductWithSingleImage[]; isNext: boolean }>> {
   console.time("TOTAL");
   console.log("REQUEST STARTED");
+  console.log("VERCEL_REGION:", process.env.VERCEL_REGION);
   const validationResult = await action({
     params,
     schema: GetFilteredProductsSchema,
@@ -211,6 +212,7 @@ export async function getFilteredProducts(
 
   if (cachedProducts) {
     console.log("CACHE PRODUCT HIT");
+    console.timeEnd("TOTAL");
     return JSON.parse(cachedProducts);
   }
 
@@ -319,6 +321,8 @@ export async function getFilteredProducts(
     return response;
   } catch (error) {
     return handleError(error) as ErrorResponse;
+  } finally{
+    console.timeEnd("TOTAL");
   }
 }
 
