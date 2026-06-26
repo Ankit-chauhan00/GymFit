@@ -6,9 +6,9 @@ import React, { ReactNode } from 'react'
 const TrainerPannelLayout = async ({children}:{children: ReactNode}) => {
   const session = await auth();
   if(!session?.user.id){
-    return
+    redirect("/")
   }
-  if(session.user.role !== "TRAINER"){
+  if( session.user.role !== "TRAINER" ){
     redirect("/");
   }
   return (
