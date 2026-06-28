@@ -111,8 +111,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       console.log("OAuth API Response:", response );
 
       return true;
-      // if (!success) return false;
-      // return true;
     },
   },
 });
